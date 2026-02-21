@@ -2,8 +2,6 @@ import OpenAI from "openai";
 import { z } from "zod";
 import { emailReplyPrompt, quoteGenerationPrompt } from "./prompts";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 const quoteSchema = z.object({
   title: z.string(),
   description: z.string().nullable().optional(),
@@ -26,6 +24,7 @@ const emailSchema = z.object({
 export const generateQuoteWithAI = async (input: Parameters<
   typeof quoteGenerationPrompt
 >[0]) => {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const prompt = quoteGenerationPrompt(input);
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
@@ -41,6 +40,7 @@ export const generateQuoteWithAI = async (input: Parameters<
 export const generateEmailReply = async (input: Parameters<
   typeof emailReplyPrompt
 >[0]) => {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const prompt = emailReplyPrompt(input);
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
