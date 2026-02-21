@@ -107,11 +107,20 @@ export async function POST(request: Request) {
     content,
   });
 
-  const { data: organization } = await supabase
+  const { data: organizationData } = await supabase
     .from("organizations")
     .select("id, name, description, logo_url")
     .eq("id", organizationId)
     .single();
+
+  const organization = organizationData
+    ? {
+        id: organizationData.id,
+        name: organizationData.name,
+        logo_url: organizationData.logo_url,
+        description: organizationData.description ?? "",
+      }
+    : null;
 
   const { data: quote } = thread?.quote_id
     ? await supabase
