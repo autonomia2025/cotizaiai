@@ -7,6 +7,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { generateQuoteFromRequest } from "@/lib/actions/quotes";
 
+export const dynamic = "force-dynamic";
+
 export default async function QuotesPage() {
   const organizationId = await getCurrentOrganizationId();
   const supabase = createSupabaseServerClient();
@@ -34,7 +36,14 @@ export default async function QuotesPage() {
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold">Create new quote</h2>
-        <form action={generateQuoteFromRequest} className="mt-4 grid gap-4">
+        <form
+          action={
+            generateQuoteFromRequest as unknown as (
+              formData: FormData
+            ) => Promise<void>
+          }
+          className="mt-4 grid gap-4"
+        >
           <CustomerSelect customers={customers ?? []} />
           <Textarea
             name="request"
