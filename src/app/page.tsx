@@ -1,64 +1,103 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen">
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-8">
+        <div className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          QuoteAI
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" asChild>
+            <Link href="/login">Login</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/signup">Get Started</Link>
+          </Button>
         </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 pb-20">
+        <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="flex flex-col gap-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              AI Sales Quoting OS
+            </p>
+            <h1 className="text-4xl font-semibold leading-tight text-foreground md:text-6xl">
+              Generate, send, and follow up on quotes in minutes.
+            </h1>
+            <p className="max-w-xl text-lg text-muted-foreground">
+              QuoteAI combines AI quoting, email automation, and PDF delivery in a
+              single platform built for multi-tenant sales teams.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" asChild>
+                <Link href="/signup">Start free trial</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/dashboard">Open demo workspace</Link>
+              </Button>
+            </div>
+          </div>
+          <Card className="relative overflow-hidden border-border/60 bg-white/70 p-8 shadow-xl shadow-muted/40">
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/60 to-muted/70" />
+            <div className="relative flex flex-col gap-6">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                  Live Workspace
+                </p>
+                <h2 className="mt-3 text-2xl font-semibold">Today&apos;s activity</h2>
+              </div>
+              <div className="grid gap-4">
+                {[
+                  "AI generated 3 quote drafts",
+                  "2 proposals accepted",
+                  "$84k revenue closed this week",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-border/60 bg-white/80 px-4 py-3 text-sm text-foreground"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-2xl bg-muted/60 p-4 text-xs text-muted-foreground">
+                QuoteAI AI agent monitors your inbox and prepares replies for
+                approval.
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-3">
+          {[
+            {
+              title: "Multi-tenant architecture",
+              description:
+                "Securely isolate data by organization with strict row-level security.",
+            },
+            {
+              title: "AI quote generation",
+              description:
+                "Generate structured pricing, line items, and summaries instantly.",
+            },
+            {
+              title: "Email agent workflows",
+              description:
+                "Send, receive, and draft replies with embedded analytics.",
+            },
+          ].map((card) => (
+            <Card key={card.title} className="border-border/60 bg-white/70 p-6">
+              <h3 className="text-lg font-semibold">{card.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {card.description}
+              </p>
+            </Card>
+          ))}
+        </section>
       </main>
     </div>
   );
