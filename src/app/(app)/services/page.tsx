@@ -8,7 +8,7 @@ import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 
 export default async function ServicesPage() {
   const organizationId = await getCurrentOrganizationId();
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data: services } = await supabase
     .from("services")
     .select("id, name, description, base_price")

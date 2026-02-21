@@ -5,7 +5,7 @@ import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 
 export default async function EmailThreadsPage() {
   const organizationId = await getCurrentOrganizationId();
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: threads } = await supabase
     .from("email_threads")

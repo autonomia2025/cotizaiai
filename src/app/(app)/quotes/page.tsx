@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function QuotesPage() {
   const organizationId = await getCurrentOrganizationId();
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: customers } = await supabase
     .from("customers")

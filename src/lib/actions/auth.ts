@@ -10,7 +10,7 @@ export const signUpWithOrganization = async (formData: FormData) => {
   const password = String(formData.get("password") || "");
   const organization = String(formData.get("organization") || "").trim();
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {
@@ -47,7 +47,7 @@ export const signIn = async (formData: FormData) => {
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -61,7 +61,7 @@ export const signIn = async (formData: FormData) => {
 };
 
 export const signOut = async () => {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
   redirect("/login");
 };

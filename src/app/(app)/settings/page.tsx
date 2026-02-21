@@ -8,7 +8,7 @@ import { updateEmailSettings, updateOrganization } from "@/lib/actions/settings"
 
 export default async function SettingsPage() {
   const organizationId = await getCurrentOrganizationId();
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: organization } = await supabase
     .from("organizations")

@@ -23,7 +23,7 @@ export async function generateQuoteFromRequest(
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: organization } = await supabase
     .from("organizations")
@@ -134,7 +134,7 @@ export const generateQuotePdf = async (quoteId: string) => {
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: quote } = await supabase
     .from("quotes")
@@ -211,7 +211,7 @@ export const sendQuote = async (quoteId: string) => {
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: quote } = await supabase
     .from("quotes")

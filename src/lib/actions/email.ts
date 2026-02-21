@@ -13,7 +13,7 @@ export const sendThreadReply = async (formData: FormData) => {
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data: thread } = await supabase
     .from("email_threads")
     .select("id, subject, customer_id")

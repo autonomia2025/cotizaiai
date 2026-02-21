@@ -13,7 +13,7 @@ export const createCustomer = async (formData: FormData) => {
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from("customers").insert({
     organization_id: organizationId,
     name,

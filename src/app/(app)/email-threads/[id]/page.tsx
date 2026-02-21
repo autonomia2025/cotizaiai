@@ -10,7 +10,7 @@ type PageProps = {
 };
 
 export default async function EmailThreadDetailPage({ params }: PageProps) {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const organizationId = await getCurrentOrganizationId();
   const { data: thread } = await supabase
     .from("email_threads")

@@ -7,7 +7,7 @@ type PageProps = {
 };
 
 export default async function CustomerDetailPage({ params }: PageProps) {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const organizationId = await getCurrentOrganizationId();
   const { data: customer } = await supabase
     .from("customers")

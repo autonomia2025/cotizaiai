@@ -8,7 +8,7 @@ import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 
 export default async function CustomersPage() {
   const organizationId = await getCurrentOrganizationId();
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data: customers } = await supabase
     .from("customers")
     .select("id, name, email, company, created_at")

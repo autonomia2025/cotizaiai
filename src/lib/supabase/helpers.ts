@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from "./server";
 
 export const getUserContext = async () => {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
     error: authError,

@@ -13,7 +13,7 @@ export const updateOrganization = async (formData: FormData) => {
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { error } = await supabase
     .from("organizations")
     .update({
@@ -39,7 +39,7 @@ export const updateEmailSettings = async (formData: FormData) => {
     throw new Error("Unauthorized");
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { data: existing } = await supabase
     .from("email_settings")

@@ -9,7 +9,7 @@ type PageProps = {
 };
 
 export default async function QuoteDetailPage({ params }: PageProps) {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const organizationId = await getCurrentOrganizationId();
   const { data: quote } = await supabase
     .from("quotes")

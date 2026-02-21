@@ -4,7 +4,7 @@ import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 
 export default async function DashboardPage() {
   const organizationId = await getCurrentOrganizationId();
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const [{ count: totalQuotes }, { count: acceptedQuotes }, { data: revenue }] =
     await Promise.all([
