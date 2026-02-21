@@ -109,7 +109,7 @@ export async function POST(request: Request) {
 
   const { data: organization } = await supabase
     .from("organizations")
-    .select("id, name, logo_url")
+    .select("id, name, description, logo_url")
     .eq("id", organizationId)
     .single();
 
