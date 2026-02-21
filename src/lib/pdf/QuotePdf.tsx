@@ -149,7 +149,7 @@ export const QuotePdf = ({
               key={`${item.name}-${index}`}
               style={[
                 styles.row,
-                index === items.length - 1 ? styles.rowLast : {},
+                index === items.length - 1 ? styles.rowLast : undefined,
               ]}
             >
               <Text style={styles.cellName}>{item.name}</Text>
