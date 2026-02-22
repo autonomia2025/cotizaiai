@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "./server";
 
 export const getUserContext = async () => {
@@ -19,13 +18,20 @@ export const getUserContext = async () => {
     .maybeSingle();
 
   if (!profile) {
-    redirect("/login?error=missing-profile");
+    await supabase.auth.signOut();
+    return {
+      user: null,
+      profile: null,
+      organizationId: null,
+      missingProfile: true,
+    };
   }
 
   return {
     user,
     profile,
     organizationId: profile?.organization_id ?? null,
+    missingProfile: false,
   };
 };
 

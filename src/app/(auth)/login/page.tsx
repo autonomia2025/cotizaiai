@@ -4,7 +4,16 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { ActionForm } from "@/components/forms/action-form";
 import { signIn } from "@/lib/actions/auth";
 
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams?: { error?: string };
+};
+
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  const errorMessage =
+    searchParams?.error === "missing-profile"
+      ? "Tu cuenta no tiene perfil asociado. Contacta soporte."
+      : null;
+
   return (
     <div className="space-y-6">
       <div>
@@ -16,6 +25,12 @@ export default function LoginPage() {
           Inicia sesion para acceder a tu workspace.
         </p>
       </div>
+
+      {errorMessage ? (
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {errorMessage}
+        </div>
+      ) : null}
 
       <ActionForm action={signIn} className="space-y-4">
         <Input name="email" type="email" placeholder="Email" required />

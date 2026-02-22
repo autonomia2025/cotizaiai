@@ -8,7 +8,11 @@ export default async function AppLayout({
 }: {
   children: ReactNode;
 }) {
-  const { user } = await getUserContext();
+  const { user, missingProfile } = await getUserContext();
+
+  if (missingProfile) {
+    redirect("/login?error=missing-profile");
+  }
 
   if (!user) {
     redirect("/login");
