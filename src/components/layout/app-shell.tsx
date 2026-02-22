@@ -44,7 +44,7 @@ export const AppShell = ({ children }: AppShellProps) => {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition hover:bg-muted/70 hover:text-foreground"
+                      "flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition hover:bg-muted/70 hover:text-foreground"
                     )}
                   >
                     <Icon className="h-4 w-4" />

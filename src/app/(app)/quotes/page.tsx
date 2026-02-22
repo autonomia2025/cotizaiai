@@ -58,7 +58,7 @@ export default async function QuotesPage() {
       <div className="grid gap-4">
         {quotes?.map((quote) => (
           <Link key={quote.id} href={`/quotes/${quote.id}`}>
-            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg">
+            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
               <div>
                 <p className="text-sm font-semibold">{quote.title}</p>
                 <p className="text-xs text-muted-foreground">{quote.status}</p>

@@ -25,7 +25,7 @@ export default async function EmailThreadsPage() {
       <div className="grid gap-4">
         {threads?.map((thread) => (
           <Link key={thread.id} href={`/email-threads/${thread.id}`}>
-            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg">
+            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
               <div>
                 <p className="text-sm font-semibold">
                   {thread.subject ?? "Quote thread"}

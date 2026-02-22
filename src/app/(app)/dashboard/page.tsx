@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
@@ -64,18 +65,17 @@ export default async function DashboardPage() {
         </div>
         <div className="mt-6 space-y-4">
           {recentQuotes?.map((quote) => (
-            <div
-              key={quote.id}
-              className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
-            >
-              <div>
-                <p className="text-sm font-medium">{quote.title}</p>
-                <p className="text-xs text-muted-foreground">{quote.status}</p>
+            <Link key={quote.id} href={`/quotes/${quote.id}`}>
+              <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3 transition hover:shadow-md cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium">{quote.title}</p>
+                  <p className="text-xs text-muted-foreground">{quote.status}</p>
+                </div>
+                <p className="text-sm font-semibold">
+                  ${Number(quote.total_price).toFixed(2)}
+                </p>
               </div>
-              <p className="text-sm font-semibold">
-                ${Number(quote.total_price).toFixed(2)}
-              </p>
-            </div>
+            </Link>
           ))}
         </div>
       </Card>

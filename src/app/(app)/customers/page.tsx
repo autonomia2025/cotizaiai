@@ -39,7 +39,7 @@ export default async function CustomersPage() {
       <div className="grid gap-4">
         {customers?.map((customer) => (
           <Link key={customer.id} href={`/customers/${customer.id}`}>
-            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg">
+            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
               <div>
                 <p className="text-sm font-semibold">{customer.name}</p>
                 <p className="text-xs text-muted-foreground">{customer.email}</p>
