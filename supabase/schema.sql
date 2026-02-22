@@ -97,6 +97,16 @@ create table if not exists public.templates (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.invitations (
+  id uuid primary key default gen_random_uuid(),
+  organization_id uuid references public.organizations(id) on delete cascade not null,
+  email text not null,
+  role text not null default 'member',
+  token uuid default gen_random_uuid() not null unique,
+  accepted_at timestamptz,
+  created_at timestamptz default now() not null
+);
+
 create or replace function public.current_organization_id()
 returns uuid
 language sql
@@ -115,6 +125,7 @@ alter table public.email_threads enable row level security;
 alter table public.email_messages enable row level security;
 alter table public.email_settings enable row level security;
 alter table public.templates enable row level security;
+alter table public.invitations enable row level security;
 
 create policy "Organizations are scoped to members" on public.organizations
   for select using (id = public.current_organization_id());
@@ -188,5 +199,9 @@ create policy "Email settings scoped to org" on public.email_settings
   with check (organization_id = public.current_organization_id());
 
 create policy "Templates scoped to org" on public.templates
+  for all using (organization_id = public.current_organization_id())
+  with check (organization_id = public.current_organization_id());
+
+create policy "Invitations scoped to org" on public.invitations
   for all using (organization_id = public.current_organization_id())
   with check (organization_id = public.current_organization_id());

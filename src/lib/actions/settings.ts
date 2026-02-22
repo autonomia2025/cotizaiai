@@ -3,6 +3,9 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { ActionResult } from "@/lib/actions/types";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { sendQuoteEmail } from "@/lib/email/resend";
+import { redirect } from "next/navigation";
 
 export const updateOrganization = async (
   _prevState: ActionResult,
@@ -85,5 +88,129 @@ export const updateEmailSettings = async (
     return { error: error.message };
   }
 
+  return { success: true };
+};
+
+export const inviteMember = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
+  const email = String(formData.get("email") || "").trim();
+  const role = String(formData.get("role") || "member").trim();
+
+  const organizationId = await getCurrentOrganizationId();
+  if (!organizationId) {
+    return { error: "Unauthorized" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+
+  const { data: profile } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", (await supabase.auth.getUser()).data.user?.id ?? "")
+    .maybeSingle();
+
+  if (profile?.role !== "owner") {
+    return { error: "Only owners can invite members." };
+  }
+
+  const { data: invite, error } = await supabase
+    .from("invitations")
+    .insert({
+      organization_id: organizationId,
+      email,
+      role: role || "member",
+    })
+    .select("token")
+    .single();
+
+  if (error || !invite) {
+    return { error: error?.message ?? "Unable to create invitation." };
+  }
+
+  const { data: organization } = await supabase
+    .from("organizations")
+    .select("name")
+    .eq("id", organizationId)
+    .single();
+
+  const { data: emailSettings } = await supabase
+    .from("email_settings")
+    .select("from_name, from_email")
+    .eq("organization_id", organizationId)
+    .maybeSingle();
+
+  const fromName = emailSettings?.from_name ?? organization?.name ?? "QuoteAI";
+  const fromEmail = emailSettings?.from_email ?? "quotes@quoteai.app";
+  const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite/${invite.token}`;
+  const html = `
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
+      <p>You have been invited to join ${organization?.name ?? "QuoteAI"}.</p>
+      <p><a href="${inviteUrl}">Accept invitation</a></p>
+    </div>
+  `;
+
+  await sendQuoteEmail({
+    to: email,
+    from: `${fromName} <${fromEmail}>`,
+    subject: `Invitation to ${organization?.name ?? "QuoteAI"}`,
+    html,
+  });
+
+  return { success: true };
+};
+
+export const acceptInvitation = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
+  const token = String(formData.get("token") || "");
+  const name = String(formData.get("name") || "").trim();
+  const password = String(formData.get("password") || "");
+
+  if (!token || !name || !password) {
+    return { error: "Missing required fields" };
+  }
+
+  const admin = createSupabaseAdminClient();
+  const { data: invitation } = await admin
+    .from("invitations")
+    .select("id, email, organization_id, role, accepted_at")
+    .eq("token", token)
+    .single();
+
+  if (!invitation || invitation.accepted_at) {
+    return { error: "Invitation is invalid or already accepted." };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.signUp({
+    email: invitation.email,
+    password,
+  });
+
+  if (error || !data.user) {
+    return { error: error?.message ?? "Unable to create account." };
+  }
+
+  const { error: userError } = await admin.from("users").insert({
+    id: data.user.id,
+    organization_id: invitation.organization_id,
+    email: invitation.email,
+    name,
+    role: invitation.role ?? "member",
+  });
+
+  if (userError) {
+    return { error: userError.message };
+  }
+
+  await admin
+    .from("invitations")
+    .update({ accepted_at: new Date().toISOString() })
+    .eq("id", invitation.id);
+
+  redirect("/dashboard");
   return { success: true };
 };

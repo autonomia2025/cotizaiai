@@ -5,7 +5,11 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
-import { updateEmailSettings, updateOrganization } from "@/lib/actions/settings";
+import {
+  inviteMember,
+  updateEmailSettings,
+  updateOrganization,
+} from "@/lib/actions/settings";
 
 export default async function SettingsPage() {
   const organizationId = await getCurrentOrganizationId();
@@ -22,6 +26,19 @@ export default async function SettingsPage() {
     .select("from_name, from_email, reply_to, signature")
     .eq("organization_id", organizationId ?? "")
     .maybeSingle();
+
+  const { data: invitations } = await supabase
+    .from("invitations")
+    .select("id, email, created_at, accepted_at")
+    .eq("organization_id", organizationId ?? "")
+    .is("accepted_at", null)
+    .order("created_at", { ascending: false });
+
+  const { data: members } = await supabase
+    .from("users")
+    .select("id, name, email, role, created_at")
+    .eq("organization_id", organizationId ?? "")
+    .order("created_at", { ascending: false });
 
   return (
     <div className="space-y-8">
@@ -92,6 +109,72 @@ export default async function SettingsPage() {
           />
           <SubmitButton>Save email settings</SubmitButton>
         </ActionForm>
+      </Card>
+
+      <Card className="border-border/60 bg-white/70 p-6">
+        <h2 className="text-lg font-semibold">Team members</h2>
+        <ActionForm
+          action={inviteMember}
+          className="mt-4 grid gap-4 md:grid-cols-[1fr_auto]"
+          successMessage="Invite sent"
+        >
+          <Input name="email" placeholder="member@company.com" required />
+          <SubmitButton>Send invite</SubmitButton>
+        </ActionForm>
+
+        <div className="mt-6 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            Pending invitations
+          </p>
+          {invitations?.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No pending invitations
+            </p>
+          ) : (
+            invitations?.map((invite) => (
+              <div
+                key={invite.id}
+                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+              >
+                <div>
+                  <p className="text-sm font-medium">{invite.email}</p>
+                  <p className="text-xs text-muted-foreground">
+                    Invited {new Date(invite.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <span className="text-xs text-muted-foreground">Pending</span>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className="mt-6 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            Members
+          </p>
+          {members?.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No members yet</p>
+          ) : (
+            members?.map((member) => (
+              <div
+                key={member.id}
+                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+              >
+                <div>
+                  <p className="text-sm font-medium">
+                    {member.name || member.email}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {member.email}
+                  </p>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {member.role}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
       </Card>
     </div>
   );
