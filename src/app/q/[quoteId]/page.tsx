@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { QuoteResponseButtons } from "@/components/quotes/quote-response-buttons";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 type PageProps = {
@@ -122,6 +123,8 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
               </div>
             ))}
           </div>
+
+          <QuoteResponseButtons quoteId={quote.id} status={quote.status} />
 
           {quote.pdf_url ? (
             <a
