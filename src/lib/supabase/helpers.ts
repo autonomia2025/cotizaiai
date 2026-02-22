@@ -18,7 +18,6 @@ export const getUserContext = async () => {
     .maybeSingle();
 
   if (!profile) {
-    await supabase.auth.signOut();
     return {
       user: null,
       profile: null,
