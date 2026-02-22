@@ -6,11 +6,11 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   deleteQuoteAction,
   generateQuotePdfAction,
-  sendQuoteAction,
   updateQuoteStatusAction,
 } from "@/lib/actions/quotes";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { QuoteStatusSelect } from "@/components/quotes/status-select";
+import { SendQuoteModal } from "@/components/quotes/send-quote-modal";
 
 type PageProps = {
   params: { id: string };
@@ -33,9 +33,28 @@ export default async function QuoteDetailPage({ params }: PageProps) {
     .select("id, name, description, price")
     .eq("quote_id", params.id);
 
+  const { data: organization } = await supabase
+    .from("organizations")
+    .select("name")
+    .eq("id", organizationId ?? "")
+    .single();
+
+  const { data: emailSettings } = await supabase
+    .from("email_settings")
+    .select("from_name, from_email, signature")
+    .eq("organization_id", organizationId ?? "")
+    .maybeSingle();
+
   if (!quote) {
     return <div>Quote not found.</div>;
   }
+
+  const { data: customer } = await supabase
+    .from("customers")
+    .select("name, email")
+    .eq("id", quote.customer_id)
+    .eq("organization_id", organizationId ?? "")
+    .single();
 
   return (
     <div className="space-y-8">
@@ -88,12 +107,30 @@ export default async function QuoteDetailPage({ params }: PageProps) {
             successMessage="PDF generated"
           >
             <input type="hidden" name="quote_id" value={quote.id} />
-            <SubmitButton variant="secondary">Generate PDF</SubmitButton>
+            <SubmitButton variant="secondary">Generar PDF</SubmitButton>
           </ActionForm>
-          <ActionForm action={sendQuoteAction} successMessage="Quote sent">
-            <input type="hidden" name="quote_id" value={quote.id} />
-            <SubmitButton>Send to customer</SubmitButton>
-          </ActionForm>
+          {customer ? (
+            <SendQuoteModal
+              quoteId={quote.id}
+              customerName={customer.name}
+              customerEmail={customer.email}
+              subject={`Quote: ${quote.title}`}
+              html={`
+                <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
+                  <p>Hi ${customer.name},</p>
+                  <p>Attached is your sales quote from ${
+                    organization?.name ?? "QuoteAI"
+                  }. Let us know if you'd like adjustments.</p>
+                  <p>
+                    View the quote here: <a href="${
+                      process.env.NEXT_PUBLIC_APP_URL
+                    }/q/${quote.id}">Open Quote</a>
+                  </p>
+                  <p>${emailSettings?.signature ?? ""}</p>
+                </div>
+              `}
+            />
+          ) : null}
           <ActionForm
             action={deleteQuoteAction}
             successMessage="Quote deleted"
