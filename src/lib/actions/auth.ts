@@ -20,7 +20,11 @@ export const signUpWithOrganization = async (
 
   if (error || !data.user) {
     console.error("signUpWithOrganization: auth signUp failed", error);
-    return { error: error?.message ?? "No se pudo crear la cuenta." };
+    const message = error?.message ?? "No se pudo crear la cuenta.";
+    if (message.toLowerCase().includes("already registered")) {
+      return { error: "Ya existe una cuenta con este email. Inicia sesion." };
+    }
+    return { error: message };
   }
 
   const { data: org, error: orgError } = await admin
@@ -50,6 +54,13 @@ export const signUpWithOrganization = async (
     return { error: userError.message };
   }
 
+  if (!data.session) {
+    return {
+      success: true,
+      message: "Cuenta creada. Revisa tu email para confirmar.",
+    };
+  }
+
   redirect("/dashboard");
   return { success: true };
 };
@@ -68,6 +79,13 @@ export const signIn = async (
   });
 
   if (error) {
+    const message = error.message.toLowerCase();
+    if (message.includes("email") && message.includes("not confirmed")) {
+      return { error: "Debes confirmar tu email antes de ingresar." };
+    }
+    if (message.includes("invalid login credentials")) {
+      return { error: "Credenciales incorrectas." };
+    }
     return { error: error.message };
   }
 

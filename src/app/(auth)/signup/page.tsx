@@ -17,7 +17,11 @@ export default function SignupPage() {
         </p>
       </div>
 
-      <ActionForm action={signUpWithOrganization} className="space-y-4">
+      <ActionForm
+        action={signUpWithOrganization}
+        className="space-y-4"
+        successMessage="Cuenta creada. Revisa tu email para confirmar."
+      >
         <Input name="name" placeholder="Tu nombre" required />
         <Input name="organization" placeholder="Nombre de la organizacion" required />
         <Input name="email" type="email" placeholder="Email de trabajo" required />

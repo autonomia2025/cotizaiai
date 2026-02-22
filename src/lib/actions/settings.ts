@@ -211,6 +211,13 @@ export const acceptInvitation = async (
     .update({ accepted_at: new Date().toISOString() })
     .eq("id", invitation.id);
 
+  if (!data.session) {
+    return {
+      success: true,
+      message: "Cuenta creada. Revisa tu email para confirmar.",
+    };
+  }
+
   redirect("/dashboard");
   return { success: true };
 };

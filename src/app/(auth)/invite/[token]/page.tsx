@@ -40,7 +40,11 @@ export default async function InvitePage({ params }: PageProps) {
         </p>
       </div>
 
-      <ActionForm action={acceptInvitation} className="space-y-4">
+      <ActionForm
+        action={acceptInvitation}
+        className="space-y-4"
+        successMessage="Cuenta creada. Revisa tu email para confirmar."
+      >
         <input type="hidden" name="token" value={params.token} />
         <Input name="name" placeholder="Tu nombre" required />
         <Input

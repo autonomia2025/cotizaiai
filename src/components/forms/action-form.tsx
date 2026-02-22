@@ -28,8 +28,9 @@ export const ActionForm = ({
       return;
     }
 
-    if (state?.success && successMessage) {
-      toast.success(successMessage);
+    const successText = state?.message ?? successMessage;
+    if (state?.success && successText) {
+      toast.success(successText);
     }
   }, [state, successMessage]);
 
