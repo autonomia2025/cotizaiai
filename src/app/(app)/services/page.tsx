@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { ActionForm } from "@/components/forms/action-form";
+import { ServiceCard } from "@/components/services/service-card";
 import { createService } from "@/lib/actions/services";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
@@ -59,17 +60,7 @@ export default async function ServicesPage() {
           </div>
         ) : (
           services?.map((service) => (
-            <Card key={service.id} className="border-border/60 bg-white/70 p-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">{service.name}</h3>
-                <p className="text-sm font-semibold">
-                  ${Number(service.base_price).toFixed(2)}
-                </p>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {service.description}
-              </p>
-            </Card>
+            <ServiceCard key={service.id} service={service} />
           ))
         )}
       </div>

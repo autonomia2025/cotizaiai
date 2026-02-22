@@ -1,6 +1,13 @@
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
+import {
+  deleteCustomerAction,
+  updateCustomerAction,
+} from "@/lib/actions/customers";
 
 type PageProps = {
   params: { id: string };
@@ -40,6 +47,64 @@ export default async function CustomerDetailPage({ params }: PageProps) {
           <p className="text-sm text-muted-foreground">{customer.company}</p>
         ) : null}
       </div>
+
+      <Card className="border-border/60 bg-white/70 p-6">
+        <h2 className="text-lg font-semibold">Edit customer</h2>
+        <ActionForm
+          action={updateCustomerAction}
+          className="mt-4 grid gap-4 md:grid-cols-3"
+          successMessage="Customer updated"
+        >
+          <input type="hidden" name="customer_id" value={customer.id} />
+          <Input
+            name="name"
+            placeholder="Full name"
+            defaultValue={customer.name}
+            required
+          />
+          <Input
+            name="email"
+            placeholder="Email"
+            type="email"
+            defaultValue={customer.email}
+            required
+          />
+          <Input
+            name="company"
+            placeholder="Company"
+            defaultValue={customer.company ?? ""}
+          />
+          <div className="md:col-span-3">
+            <SubmitButton>Save changes</SubmitButton>
+          </div>
+        </ActionForm>
+      </Card>
+
+      <Card className="border-border/60 bg-white/70 p-6">
+        <h2 className="text-lg font-semibold text-destructive">
+          Delete customer
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          This will remove the customer and all related data.
+        </p>
+        <ActionForm
+          action={deleteCustomerAction}
+          className="mt-4"
+          successMessage="Customer deleted"
+        >
+          <input type="hidden" name="customer_id" value={customer.id} />
+          <SubmitButton
+            variant="destructive"
+            onClick={(event) => {
+              if (!window.confirm("Delete this customer?")) {
+                event.preventDefault();
+              }
+            }}
+          >
+            Delete customer
+          </SubmitButton>
+        </ActionForm>
+      </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold">Recent quotes</h2>

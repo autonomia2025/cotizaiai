@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { CustomerSelect } from "@/components/forms/customer-select";
 import { ActionForm } from "@/components/forms/action-form";
+import { Badge } from "@/components/ui/badge";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { generateQuoteFromRequest } from "@/lib/actions/quotes";
@@ -13,6 +14,13 @@ export const dynamic = "force-dynamic";
 export default async function QuotesPage() {
   const organizationId = await getCurrentOrganizationId();
   const supabase = await createSupabaseServerClient();
+
+  const statusStyles: Record<string, string> = {
+    draft: "bg-muted text-muted-foreground",
+    sent: "bg-blue-100 text-blue-700",
+    accepted: "bg-emerald-100 text-emerald-700",
+    rejected: "bg-red-100 text-red-700",
+  };
 
   const { data: customers } = await supabase
     .from("customers")
@@ -68,9 +76,12 @@ export default async function QuotesPage() {
               <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">{quote.title}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <Badge
+                    className={`mt-2 w-fit ${statusStyles[quote.status] ?? ""}`}
+                    variant="secondary"
+                  >
                     {quote.status}
-                  </p>
+                  </Badge>
                 </div>
                 <p className="text-sm font-semibold">
                   ${Number(quote.total_price).toFixed(2)}

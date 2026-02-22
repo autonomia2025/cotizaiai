@@ -346,6 +346,49 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
   return { success: true };
 };
 
+export const deleteQuote = async (id: string): Promise<ActionResult> => {
+  const organizationId = await getCurrentOrganizationId();
+  if (!organizationId) {
+    return { error: "Unauthorized" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from("quotes")
+    .delete()
+    .eq("id", id)
+    .eq("organization_id", organizationId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
+};
+
+export const updateQuoteStatus = async (
+  id: string,
+  status: "draft" | "sent" | "accepted" | "rejected"
+): Promise<ActionResult> => {
+  const organizationId = await getCurrentOrganizationId();
+  if (!organizationId) {
+    return { error: "Unauthorized" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from("quotes")
+    .update({ status })
+    .eq("id", id)
+    .eq("organization_id", organizationId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
+};
+
 export const generateQuotePdfAction = async (
   _prevState: ActionResult,
   formData: FormData
@@ -366,4 +409,42 @@ export const sendQuoteAction = async (
     return { error: "Missing quote." };
   }
   return sendQuote(quoteId);
+};
+
+export const deleteQuoteAction = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
+  const quoteId = String(formData.get("quote_id") || "");
+  if (!quoteId) {
+    return { error: "Missing quote." };
+  }
+  const result = await deleteQuote(quoteId);
+  if (result.error) {
+    return result;
+  }
+  redirect("/quotes");
+  return { success: true };
+};
+
+export const updateQuoteStatusAction = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
+  const quoteId = String(formData.get("quote_id") || "");
+  const status = String(formData.get("status") || "");
+  if (!quoteId) {
+    return { error: "Missing quote." };
+  }
+
+  if (
+    status !== "draft" &&
+    status !== "sent" &&
+    status !== "accepted" &&
+    status !== "rejected"
+  ) {
+    return { error: "Invalid status." };
+  }
+
+  return updateQuoteStatus(quoteId, status);
 };

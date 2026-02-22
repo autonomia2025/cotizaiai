@@ -4,10 +4,13 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
+  deleteQuoteAction,
   generateQuotePdfAction,
   sendQuoteAction,
+  updateQuoteStatusAction,
 } from "@/lib/actions/quotes";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
+import { QuoteStatusSelect } from "@/components/quotes/status-select";
 
 type PageProps = {
   params: { id: string };
@@ -41,7 +44,15 @@ export default async function QuoteDetailPage({ params }: PageProps) {
           Quote
         </p>
         <h1 className="mt-2 text-3xl font-semibold">{quote.title}</h1>
-        <p className="text-sm text-muted-foreground">{quote.status}</p>
+        <div className="mt-4 max-w-xs">
+          <ActionForm
+            action={updateQuoteStatusAction}
+            successMessage="Status updated"
+          >
+            <input type="hidden" name="quote_id" value={quote.id} />
+            <QuoteStatusSelect value={quote.status} />
+          </ActionForm>
+        </div>
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
@@ -82,6 +93,22 @@ export default async function QuoteDetailPage({ params }: PageProps) {
           <ActionForm action={sendQuoteAction} successMessage="Quote sent">
             <input type="hidden" name="quote_id" value={quote.id} />
             <SubmitButton>Send to customer</SubmitButton>
+          </ActionForm>
+          <ActionForm
+            action={deleteQuoteAction}
+            successMessage="Quote deleted"
+          >
+            <input type="hidden" name="quote_id" value={quote.id} />
+            <SubmitButton
+              variant="destructive"
+              onClick={(event) => {
+                if (!window.confirm("Delete this quote?")) {
+                  event.preventDefault();
+                }
+              }}
+            >
+              Delete quote
+            </SubmitButton>
           </ActionForm>
           {quote.pdf_url ? (
             <Button asChild variant="ghost">
