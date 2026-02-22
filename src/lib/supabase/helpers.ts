@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "./server";
 
 export const getUserContext = async () => {
@@ -16,6 +17,10 @@ export const getUserContext = async () => {
     .select("id, organization_id, name, role, email")
     .eq("id", user.id)
     .maybeSingle();
+
+  if (!profile) {
+    redirect("/login?error=missing-profile");
+  }
 
   return {
     user,

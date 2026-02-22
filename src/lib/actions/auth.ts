@@ -15,13 +15,14 @@ export const signUpWithOrganization = async (
   const organization = String(formData.get("organization") || "").trim();
 
   const supabase = await createSupabaseServerClient();
+  const admin = createSupabaseAdminClient();
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {
+    console.error("signUpWithOrganization: auth signUp failed", error);
     return { error: error?.message ?? "No se pudo crear la cuenta." };
   }
 
-  const admin = createSupabaseAdminClient();
   const { data: org, error: orgError } = await admin
     .from("organizations")
     .insert({ name: organization })
@@ -29,6 +30,8 @@ export const signUpWithOrganization = async (
     .single();
 
   if (orgError || !org) {
+    console.error("signUpWithOrganization: organization insert failed", orgError);
+    await admin.auth.admin.deleteUser(data.user.id);
     return { error: orgError?.message ?? "No se pudo crear la organizacion." };
   }
 
@@ -41,6 +44,9 @@ export const signUpWithOrganization = async (
   });
 
   if (userError) {
+    console.error("signUpWithOrganization: users insert failed", userError);
+    await admin.from("organizations").delete().eq("id", org.id);
+    await admin.auth.admin.deleteUser(data.user.id);
     return { error: userError.message };
   }
 
