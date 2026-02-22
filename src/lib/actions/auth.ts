@@ -89,26 +89,6 @@ export const signIn = async (
     return { error: error.message };
   }
 
-  const { data: userData } = await supabase.auth.getUser();
-  const userId = userData.user?.id ?? "";
-  if (!userId) {
-    return { error: "No se pudo validar la sesion." };
-  }
-
-  const { data: profile } = await supabase
-    .from("users")
-    .select("id")
-    .eq("id", userId)
-    .maybeSingle();
-
-  if (!profile) {
-    await supabase.auth.signOut();
-    return {
-      error:
-        "Tu cuenta no tiene perfil asociado. Contacta soporte o crea un usuario nuevo.",
-    };
-  }
-
   redirect("/dashboard");
   return { success: true };
 };
