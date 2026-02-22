@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { CustomerSelect } from "@/components/forms/customer-select";
+import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { generateQuoteFromRequest } from "@/lib/actions/quotes";
@@ -36,12 +37,8 @@ export default async function QuotesPage() {
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold">Create new quote</h2>
-        <form
-          action={
-            generateQuoteFromRequest as unknown as (
-              formData: FormData
-            ) => Promise<void>
-          }
+        <ActionForm
+          action={generateQuoteFromRequest}
           className="mt-4 grid gap-4"
         >
           <CustomerSelect customers={customers ?? []} />
@@ -51,24 +48,37 @@ export default async function QuotesPage() {
             rows={4}
             required
           />
-          <Button type="submit">Generate quote with AI</Button>
-        </form>
+          <SubmitButton>Generate quote with AI</SubmitButton>
+        </ActionForm>
       </Card>
 
       <div className="grid gap-4">
-        {quotes?.map((quote) => (
-          <Link key={quote.id} href={`/quotes/${quote.id}`}>
-            <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
-              <div>
-                <p className="text-sm font-semibold">{quote.title}</p>
-                <p className="text-xs text-muted-foreground">{quote.status}</p>
-              </div>
-              <p className="text-sm font-semibold">
-                ${Number(quote.total_price).toFixed(2)}
-              </p>
-            </Card>
-          </Link>
-        ))}
+        {quotes?.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center">
+            <p className="text-sm font-medium text-muted-foreground">
+              No quotes yet
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Generate your first quote above
+            </p>
+          </div>
+        ) : (
+          quotes?.map((quote) => (
+            <Link key={quote.id} href={`/quotes/${quote.id}`}>
+              <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
+                <div>
+                  <p className="text-sm font-semibold">{quote.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {quote.status}
+                  </p>
+                </div>
+                <p className="text-sm font-semibold">
+                  ${Number(quote.total_price).toFixed(2)}
+                </p>
+              </Card>
+            </Link>
+          ))
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { updateEmailSettings, updateOrganization } from "@/lib/actions/settings";
@@ -33,7 +34,11 @@ export default async function SettingsPage() {
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold">Organization</h2>
-        <form action={updateOrganization} className="mt-4 grid gap-4">
+        <ActionForm
+          action={updateOrganization}
+          className="mt-4 grid gap-4"
+          successMessage="Organization updated"
+        >
           <Input
             name="name"
             placeholder="Organization name"
@@ -51,13 +56,17 @@ export default async function SettingsPage() {
             placeholder="Logo URL"
             defaultValue={organization?.logo_url ?? ""}
           />
-          <Button type="submit">Save organization</Button>
-        </form>
+          <SubmitButton>Save organization</SubmitButton>
+        </ActionForm>
       </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold">Email settings</h2>
-        <form action={updateEmailSettings} className="mt-4 grid gap-4">
+        <ActionForm
+          action={updateEmailSettings}
+          className="mt-4 grid gap-4"
+          successMessage="Email settings updated"
+        >
           <div className="grid gap-4 md:grid-cols-2">
             <Input
               name="from_name"
@@ -81,8 +90,8 @@ export default async function SettingsPage() {
             rows={4}
             defaultValue={emailSettings?.signature ?? ""}
           />
-          <Button type="submit">Save email settings</Button>
-        </form>
+          <SubmitButton>Save email settings</SubmitButton>
+        </ActionForm>
       </Card>
     </div>
   );

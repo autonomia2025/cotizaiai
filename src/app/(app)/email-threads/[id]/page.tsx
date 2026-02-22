@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { sendThreadReply } from "@/lib/actions/email";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
@@ -67,7 +68,11 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold">Reply</h2>
-        <form action={sendThreadReply} className="mt-4 space-y-4">
+        <ActionForm
+          action={sendThreadReply}
+          className="mt-4 space-y-4"
+          successMessage="Reply sent"
+        >
           <input type="hidden" name="thread_id" value={thread.id} />
           <Textarea
             name="body"
@@ -76,8 +81,8 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
             defaultValue={suggested?.content ?? ""}
             required
           />
-          <Button type="submit">Send reply</Button>
-        </form>
+          <SubmitButton>Send reply</SubmitButton>
+        </ActionForm>
       </Card>
     </div>
   );

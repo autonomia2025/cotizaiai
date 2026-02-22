@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { ActionForm } from "@/components/forms/action-form";
 import { signIn } from "@/lib/actions/auth";
 
 export default function LoginPage() {
@@ -16,13 +17,11 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <form action={signIn} className="space-y-4">
+      <ActionForm action={signIn} className="space-y-4">
         <Input name="email" type="email" placeholder="Email" required />
         <Input name="password" type="password" placeholder="Password" required />
-        <Button className="w-full" type="submit">
-          Sign in
-        </Button>
-      </form>
+        <SubmitButton className="w-full">Sign in</SubmitButton>
+      </ActionForm>
 
       <p className="text-sm text-muted-foreground">
         Need an account?{" "}

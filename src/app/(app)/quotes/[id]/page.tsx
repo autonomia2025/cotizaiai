@@ -1,7 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { ActionForm } from "@/components/forms/action-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { generateQuotePdf, sendQuote } from "@/lib/actions/quotes";
+import {
+  generateQuotePdfAction,
+  sendQuoteAction,
+} from "@/lib/actions/quotes";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 
 type PageProps = {
@@ -28,16 +33,6 @@ export default async function QuoteDetailPage({ params }: PageProps) {
   if (!quote) {
     return <div>Quote not found.</div>;
   }
-
-  const generatePdfAction = async () => {
-    "use server";
-    await generateQuotePdf(quote.id);
-  };
-
-  const sendQuoteAction = async () => {
-    "use server";
-    await sendQuote(quote.id);
-  };
 
   return (
     <div className="space-y-8">
@@ -77,14 +72,17 @@ export default async function QuoteDetailPage({ params }: PageProps) {
           </p>
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <form action={generatePdfAction}>
-            <Button type="submit" variant="secondary">
-              Generate PDF
-            </Button>
-          </form>
-          <form action={sendQuoteAction}>
-            <Button type="submit">Send to customer</Button>
-          </form>
+          <ActionForm
+            action={generateQuotePdfAction}
+            successMessage="PDF generated"
+          >
+            <input type="hidden" name="quote_id" value={quote.id} />
+            <SubmitButton variant="secondary">Generate PDF</SubmitButton>
+          </ActionForm>
+          <ActionForm action={sendQuoteAction} successMessage="Quote sent">
+            <input type="hidden" name="quote_id" value={quote.id} />
+            <SubmitButton>Send to customer</SubmitButton>
+          </ActionForm>
           {quote.pdf_url ? (
             <Button asChild variant="ghost">
               <a href={quote.pdf_url} target="_blank" rel="noreferrer">

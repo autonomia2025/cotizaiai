@@ -64,19 +64,32 @@ export default async function DashboardPage() {
           <h2 className="text-lg font-semibold">Recent Activity</h2>
         </div>
         <div className="mt-6 space-y-4">
-          {recentQuotes?.map((quote) => (
-            <Link key={quote.id} href={`/quotes/${quote.id}`}>
-              <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3 transition hover:shadow-md cursor-pointer">
-                <div>
-                  <p className="text-sm font-medium">{quote.title}</p>
-                  <p className="text-xs text-muted-foreground">{quote.status}</p>
+          {recentQuotes?.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-10 text-center">
+              <p className="text-sm font-medium text-muted-foreground">
+                No recent activity yet
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Generate your first quote to see updates here
+              </p>
+            </div>
+          ) : (
+            recentQuotes?.map((quote) => (
+              <Link key={quote.id} href={`/quotes/${quote.id}`}>
+                <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3 transition hover:shadow-md cursor-pointer">
+                  <div>
+                    <p className="text-sm font-medium">{quote.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {quote.status}
+                    </p>
+                  </div>
+                  <p className="text-sm font-semibold">
+                    ${Number(quote.total_price).toFixed(2)}
+                  </p>
                 </div>
-                <p className="text-sm font-semibold">
-                  ${Number(quote.total_price).toFixed(2)}
-                </p>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))
+          )}
         </div>
       </Card>
     </div>

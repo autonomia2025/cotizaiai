@@ -17,7 +17,20 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
     .single();
 
   if (!quote) {
-    return <div className="p-10">Quote not found.</div>;
+    return (
+      <div className="min-h-screen px-6 py-16">
+        <div className="mx-auto w-full max-w-[700px] rounded-3xl border border-dashed border-border/60 bg-white/70 px-8 py-14 text-center shadow-xl shadow-muted/30">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            QuoteAI
+          </p>
+          <h1 className="mt-4 text-2xl font-semibold">Quote not found</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            The quote link might be expired or incorrect. Please request a new
+            one from the sender.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const { data: organization } = await supabase

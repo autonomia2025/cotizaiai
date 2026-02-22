@@ -3,14 +3,18 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
 import { sendQuoteEmail } from "@/lib/email/resend";
+import { ActionResult } from "@/lib/actions/types";
 
-export const sendThreadReply = async (formData: FormData) => {
+export const sendThreadReply = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
   const threadId = String(formData.get("thread_id") || "");
   const body = String(formData.get("body") || "").trim();
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -22,7 +26,7 @@ export const sendThreadReply = async (formData: FormData) => {
     .single();
 
   if (!thread) {
-    throw new Error("Thread not found.");
+    return { error: "Thread not found." };
   }
 
   const { data: organization } = await supabase
@@ -45,7 +49,7 @@ export const sendThreadReply = async (formData: FormData) => {
     .single();
 
   if (!organization || !customer) {
-    throw new Error("Missing email data.");
+    return { error: "Missing email data." };
   }
 
   const fromName = emailSettings?.from_name ?? organization.name;
@@ -74,4 +78,6 @@ export const sendThreadReply = async (formData: FormData) => {
     content: body,
     is_suggested: false,
   });
+
+  return { success: true };
 };

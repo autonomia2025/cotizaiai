@@ -2,15 +2,19 @@
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentOrganizationId } from "@/lib/supabase/helpers";
+import { ActionResult } from "@/lib/actions/types";
 
-export const createService = async (formData: FormData) => {
+export const createService = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
   const name = String(formData.get("name") || "").trim();
   const description = String(formData.get("description") || "").trim();
   const basePrice = Number(formData.get("base_price") || 0);
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -22,6 +26,8 @@ export const createService = async (formData: FormData) => {
   });
 
   if (error) {
-    throw new Error(error.message);
+    return { error: error.message };
   }
+
+  return { success: true };
 };

@@ -3,8 +3,12 @@
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { ActionResult } from "@/lib/actions/types";
 
-export const signUpWithOrganization = async (formData: FormData) => {
+export const signUpWithOrganization = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
@@ -14,7 +18,7 @@ export const signUpWithOrganization = async (formData: FormData) => {
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {
-    throw new Error(error?.message ?? "Unable to sign up.");
+    return { error: error?.message ?? "Unable to sign up." };
   }
 
   const admin = createSupabaseAdminClient();
@@ -25,7 +29,7 @@ export const signUpWithOrganization = async (formData: FormData) => {
     .single();
 
   if (orgError || !org) {
-    throw new Error(orgError?.message ?? "Unable to create organization.");
+    return { error: orgError?.message ?? "Unable to create organization." };
   }
 
   const { error: userError } = await admin.from("users").insert({
@@ -37,13 +41,17 @@ export const signUpWithOrganization = async (formData: FormData) => {
   });
 
   if (userError) {
-    throw new Error(userError.message);
+    return { error: userError.message };
   }
 
   redirect("/dashboard");
+  return { success: true };
 };
 
-export const signIn = async (formData: FormData) => {
+export const signIn = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
 
@@ -54,14 +62,19 @@ export const signIn = async (formData: FormData) => {
   });
 
   if (error) {
-    throw new Error(error.message);
+    return { error: error.message };
   }
 
   redirect("/dashboard");
+  return { success: true };
 };
 
-export const signOut = async () => {
+export const signOut = async (): Promise<ActionResult> => {
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    return { error: error.message };
+  }
   redirect("/login");
+  return { success: true };
 };

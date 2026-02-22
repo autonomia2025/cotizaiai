@@ -6,21 +6,23 @@ import { generateQuoteWithAI } from "@/lib/ai";
 import { generateQuotePdfBuffer } from "@/lib/pdf";
 import { sendQuoteEmail } from "@/lib/email/resend";
 import { redirect } from "next/navigation";
+import { ActionResult } from "@/lib/actions/types";
 
 export async function generateQuoteFromRequest(
+  _prevState: ActionResult,
   formData: FormData
-): Promise<void> {
+): Promise<ActionResult> {
   const organizationId = await getCurrentOrganizationId();
 
   const customerId = String(formData.get("customer_id") || "");
   const request = String(formData.get("request") || "").trim();
 
   if (!customerId || !request) {
-    throw new Error("Missing required fields");
+    return { error: "Missing required fields" };
   }
 
   if (!organizationId) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -44,7 +46,7 @@ export async function generateQuoteFromRequest(
     .eq("organization_id", organizationId);
 
   if (!organization || !customer || !services) {
-    throw new Error("Missing data for quote generation.");
+    return { error: "Missing data for quote generation." };
   }
 
   const aiQuote = await generateQuoteWithAI({
@@ -86,7 +88,7 @@ export async function generateQuoteFromRequest(
   }[];
 
   if (sanitizedItems.length === 0) {
-    throw new Error("AI could not map services to catalog.");
+    return { error: "AI could not map services to catalog." };
   }
 
   const totalPrice = sanitizedItems.reduce(
@@ -108,7 +110,7 @@ export async function generateQuoteFromRequest(
     .single();
 
   if (quoteError || !quote) {
-    throw new Error(quoteError?.message ?? "Unable to create quote.");
+    return { error: quoteError?.message ?? "Unable to create quote." };
   }
 
   const items = sanitizedItems.map((item) => ({
@@ -121,17 +123,19 @@ export async function generateQuoteFromRequest(
     .insert(items);
 
   if (itemsError) {
-    throw new Error(itemsError.message);
+    return { error: itemsError.message };
   }
 
   redirect(`/quotes/${quote.id}`);
-  return;
+  return { success: true };
 }
 
-export const generateQuotePdf = async (quoteId: string) => {
+export const generateQuotePdf = async (
+  quoteId: string
+): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -146,7 +150,7 @@ export const generateQuotePdf = async (quoteId: string) => {
     .single();
 
   if (!quote) {
-    throw new Error("Quote not found.");
+    return { error: "Quote not found." };
   }
 
   const { data: organization } = await supabase
@@ -168,7 +172,7 @@ export const generateQuotePdf = async (quoteId: string) => {
     .eq("quote_id", quoteId);
 
   if (!organization || !customer || !items) {
-    throw new Error("Missing quote data.");
+    return { error: "Missing quote data." };
   }
 
   const pdfBuffer = await generateQuotePdfBuffer({
@@ -190,7 +194,7 @@ export const generateQuotePdf = async (quoteId: string) => {
     });
 
   if (uploadError || !upload) {
-    throw new Error(uploadError?.message ?? "Unable to upload PDF.");
+    return { error: uploadError?.message ?? "Unable to upload PDF." };
   }
 
   const { data: publicUrl } = supabase.storage
@@ -202,13 +206,13 @@ export const generateQuotePdf = async (quoteId: string) => {
     .update({ pdf_url: publicUrl.publicUrl })
     .eq("id", quoteId);
 
-  return publicUrl.publicUrl;
+  return { success: true };
 };
 
-export const sendQuote = async (quoteId: string) => {
+export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -223,7 +227,7 @@ export const sendQuote = async (quoteId: string) => {
     .single();
 
   if (!quote) {
-    throw new Error("Quote not found.");
+    return { error: "Quote not found." };
   }
 
   const { data: organization } = await supabase
@@ -251,7 +255,7 @@ export const sendQuote = async (quoteId: string) => {
     .eq("quote_id", quoteId);
 
   if (!organization || !customer || !items) {
-    throw new Error("Missing quote data.");
+    return { error: "Missing quote data." };
   }
 
   const pdfBuffer = await generateQuotePdfBuffer({
@@ -273,7 +277,7 @@ export const sendQuote = async (quoteId: string) => {
     });
 
   if (uploadError || !upload) {
-    throw new Error(uploadError?.message ?? "Unable to upload PDF.");
+    return { error: uploadError?.message ?? "Unable to upload PDF." };
   }
 
   const { data: publicUrl } = supabase.storage
@@ -339,5 +343,27 @@ export const sendQuote = async (quoteId: string) => {
     });
   }
 
-  return thread?.id as string | undefined;
+  return { success: true };
+};
+
+export const generateQuotePdfAction = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
+  const quoteId = String(formData.get("quote_id") || "");
+  if (!quoteId) {
+    return { error: "Missing quote." };
+  }
+  return generateQuotePdf(quoteId);
+};
+
+export const sendQuoteAction = async (
+  _prevState: ActionResult,
+  formData: FormData
+): Promise<ActionResult> => {
+  const quoteId = String(formData.get("quote_id") || "");
+  if (!quoteId) {
+    return { error: "Missing quote." };
+  }
+  return sendQuote(quoteId);
 };

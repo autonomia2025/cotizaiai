@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { ActionForm } from "@/components/forms/action-form";
 import { signUpWithOrganization } from "@/lib/actions/auth";
 
 export default function SignupPage() {
@@ -16,15 +17,13 @@ export default function SignupPage() {
         </p>
       </div>
 
-      <form action={signUpWithOrganization} className="space-y-4">
+      <ActionForm action={signUpWithOrganization} className="space-y-4">
         <Input name="name" placeholder="Your name" required />
         <Input name="organization" placeholder="Organization name" required />
         <Input name="email" type="email" placeholder="Work email" required />
         <Input name="password" type="password" placeholder="Password" required />
-        <Button className="w-full" type="submit">
-          Create account
-        </Button>
-      </form>
+        <SubmitButton className="w-full">Create account</SubmitButton>
+      </ActionForm>
 
       <p className="text-sm text-muted-foreground">
         Already have an account?{" "}
