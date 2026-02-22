@@ -136,6 +136,9 @@ create policy "Organizations can be updated by members" on public.organizations
 create policy "Users can read org members" on public.users
   for select using (organization_id = public.current_organization_id());
 
+create policy "Users can read own profile" on public.users
+  for select using (id = auth.uid());
+
 create policy "Users can update own profile" on public.users
   for update using (id = auth.uid());
 
