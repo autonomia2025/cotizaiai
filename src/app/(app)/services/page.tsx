@@ -21,30 +21,30 @@ export default async function ServicesPage() {
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Services
+          Servicios
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Service catalog</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Catalogo de servicios</h1>
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Create service</h2>
+        <h2 className="text-lg font-semibold">Crear servicio</h2>
         <ActionForm
           action={createService}
           className="mt-4 grid gap-4"
-          successMessage="Service added"
+          successMessage="Servicio agregado"
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <Input name="name" placeholder="Service name" required />
+            <Input name="name" placeholder="Nombre del servicio" required />
             <Input
               name="base_price"
-              placeholder="Base price"
+              placeholder="Precio base"
               type="number"
               step="0.01"
               required
             />
           </div>
-          <Textarea name="description" placeholder="Description" rows={3} />
-          <SubmitButton>Add service</SubmitButton>
+          <Textarea name="description" placeholder="Descripcion" rows={3} />
+          <SubmitButton>Agregar servicio</SubmitButton>
         </ActionForm>
       </Card>
 
@@ -52,10 +52,10 @@ export default async function ServicesPage() {
         {services?.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center md:col-span-2">
             <p className="text-sm font-medium text-muted-foreground">
-              No services yet
+              Aun no hay servicios
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Add your first service above
+              Agrega tu primer servicio arriba
             </p>
           </div>
         ) : (

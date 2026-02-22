@@ -17,7 +17,7 @@ export const updateOrganization = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -48,7 +48,7 @@ export const updateEmailSettings = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -100,7 +100,7 @@ export const inviteMember = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -112,7 +112,7 @@ export const inviteMember = async (
     .maybeSingle();
 
   if (profile?.role !== "owner") {
-    return { error: "Only owners can invite members." };
+    return { error: "Solo propietarios pueden invitar miembros." };
   }
 
   const { data: invite, error } = await supabase
@@ -126,7 +126,7 @@ export const inviteMember = async (
     .single();
 
   if (error || !invite) {
-    return { error: error?.message ?? "Unable to create invitation." };
+    return { error: error?.message ?? "No se pudo crear la invitacion." };
   }
 
   const { data: organization } = await supabase
@@ -146,15 +146,15 @@ export const inviteMember = async (
   const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite/${invite.token}`;
   const html = `
     <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
-      <p>You have been invited to join ${organization?.name ?? "QuoteAI"}.</p>
-      <p><a href="${inviteUrl}">Accept invitation</a></p>
+      <p>Has sido invitado a unirte a ${organization?.name ?? "QuoteAI"}.</p>
+      <p><a href="${inviteUrl}">Aceptar invitacion</a></p>
     </div>
   `;
 
   await sendQuoteEmail({
     to: email,
     from: `${fromName} <${fromEmail}>`,
-    subject: `Invitation to ${organization?.name ?? "QuoteAI"}`,
+    subject: `Invitacion a ${organization?.name ?? "QuoteAI"}`,
     html,
   });
 
@@ -170,7 +170,7 @@ export const acceptInvitation = async (
   const password = String(formData.get("password") || "");
 
   if (!token || !name || !password) {
-    return { error: "Missing required fields" };
+    return { error: "Faltan campos requeridos" };
   }
 
   const admin = createSupabaseAdminClient();
@@ -181,7 +181,7 @@ export const acceptInvitation = async (
     .single();
 
   if (!invitation || invitation.accepted_at) {
-    return { error: "Invitation is invalid or already accepted." };
+    return { error: "La invitacion es invalida o ya fue aceptada." };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -191,7 +191,7 @@ export const acceptInvitation = async (
   });
 
   if (error || !data.user) {
-    return { error: error?.message ?? "Unable to create account." };
+    return { error: error?.message ?? "No se pudo crear la cuenta." };
   }
 
   const { error: userError } = await admin.from("users").insert({

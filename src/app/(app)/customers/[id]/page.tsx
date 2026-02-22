@@ -31,15 +31,22 @@ export default async function CustomerDetailPage({ params }: PageProps) {
     .order("created_at", { ascending: false })
     .limit(6);
 
+  const statusLabels: Record<string, string> = {
+    draft: "Borrador",
+    sent: "Enviada",
+    accepted: "Aceptada",
+    rejected: "Rechazada",
+  };
+
   if (!customer) {
-    return <div>Customer not found.</div>;
+    return <div>Cliente no encontrado.</div>;
   }
 
   return (
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Customer
+          Cliente
         </p>
         <h1 className="mt-2 text-3xl font-semibold">{customer.name}</h1>
         <p className="text-sm text-muted-foreground">{customer.email}</p>
@@ -49,16 +56,16 @@ export default async function CustomerDetailPage({ params }: PageProps) {
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Edit customer</h2>
+        <h2 className="text-lg font-semibold">Editar cliente</h2>
         <ActionForm
           action={updateCustomerAction}
           className="mt-4 grid gap-4 md:grid-cols-3"
-          successMessage="Customer updated"
+          successMessage="Cliente actualizado"
         >
           <input type="hidden" name="customer_id" value={customer.id} />
           <Input
             name="name"
-            placeholder="Full name"
+            placeholder="Nombre completo"
             defaultValue={customer.name}
             required
           />
@@ -71,58 +78,66 @@ export default async function CustomerDetailPage({ params }: PageProps) {
           />
           <Input
             name="company"
-            placeholder="Company"
+            placeholder="Empresa"
             defaultValue={customer.company ?? ""}
           />
           <div className="md:col-span-3">
-            <SubmitButton>Save changes</SubmitButton>
+            <SubmitButton>Guardar cambios</SubmitButton>
           </div>
         </ActionForm>
       </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
         <h2 className="text-lg font-semibold text-destructive">
-          Delete customer
+          Eliminar cliente
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          This will remove the customer and all related data.
+          Esta accion eliminara el cliente y sus datos relacionados.
         </p>
         <ActionForm
           action={deleteCustomerAction}
           className="mt-4"
-          successMessage="Customer deleted"
+          successMessage="Cliente eliminado"
         >
           <input type="hidden" name="customer_id" value={customer.id} />
           <SubmitButton
             variant="destructive"
             onClick={(event) => {
-              if (!window.confirm("Delete this customer?")) {
+              if (!window.confirm("¿Eliminar este cliente?")) {
                 event.preventDefault();
               }
             }}
           >
-            Delete customer
+            Eliminar cliente
           </SubmitButton>
         </ActionForm>
       </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Recent quotes</h2>
+        <h2 className="text-lg font-semibold">Cotizaciones recientes</h2>
         <div className="mt-4 space-y-3">
-          {quotes?.map((quote) => (
-            <div
-              key={quote.id}
-              className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
-            >
-              <div>
-                <p className="text-sm font-medium">{quote.title}</p>
-                <p className="text-xs text-muted-foreground">{quote.status}</p>
+          {quotes?.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Aun no hay cotizaciones.
+            </p>
+          ) : (
+            quotes?.map((quote) => (
+              <div
+                key={quote.id}
+                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+              >
+                <div>
+                  <p className="text-sm font-medium">{quote.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {statusLabels[quote.status] ?? quote.status}
+                  </p>
+                </div>
+                <p className="text-sm font-semibold">
+                  ${Number(quote.total_price).toFixed(2)}
+                </p>
               </div>
-              <p className="text-sm font-semibold">
-                ${Number(quote.total_price).toFixed(2)}
-              </p>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </Card>
     </div>

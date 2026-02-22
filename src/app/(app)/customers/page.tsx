@@ -20,23 +20,23 @@ export default async function CustomersPage() {
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Customers
+          Clientes
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Customer directory</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Directorio de clientes</h1>
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Create customer</h2>
+        <h2 className="text-lg font-semibold">Crear cliente</h2>
         <ActionForm
           action={createCustomer}
           className="mt-4 grid gap-4 md:grid-cols-3"
-          successMessage="Customer added"
+          successMessage="Cliente agregado"
         >
-          <Input name="name" placeholder="Full name" required />
+          <Input name="name" placeholder="Nombre completo" required />
           <Input name="email" placeholder="Email" type="email" required />
-          <Input name="company" placeholder="Company" />
+          <Input name="company" placeholder="Empresa" />
           <div className="md:col-span-3">
-            <SubmitButton>Add customer</SubmitButton>
+            <SubmitButton>Agregar cliente</SubmitButton>
           </div>
         </ActionForm>
       </Card>
@@ -45,10 +45,10 @@ export default async function CustomersPage() {
         {customers?.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center">
             <p className="text-sm font-medium text-muted-foreground">
-              No customers yet
+              Aun no hay clientes
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Add your first customer above
+              Agrega tu primer cliente arriba
             </p>
           </div>
         ) : (

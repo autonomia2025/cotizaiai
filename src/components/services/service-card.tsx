@@ -24,7 +24,7 @@ export const ServiceCard = ({ service }: { service: Service }) => {
         <ActionForm
           action={updateServiceAction}
           className="grid gap-4"
-          successMessage="Service updated"
+          successMessage="Servicio actualizado"
         >
           <input type="hidden" name="service_id" value={service.id} />
           <Input name="name" defaultValue={service.name} required />
@@ -41,13 +41,13 @@ export const ServiceCard = ({ service }: { service: Service }) => {
             defaultValue={service.description ?? ""}
           />
           <div className="flex flex-wrap gap-2">
-            <SubmitButton>Save</SubmitButton>
+            <SubmitButton>Guardar</SubmitButton>
             <button
               type="button"
               className="rounded-xl border border-border px-4 py-2 text-sm"
               onClick={() => setIsEditing(false)}
             >
-              Cancel
+              Cancelar
             </button>
           </div>
         </ActionForm>
@@ -68,22 +68,22 @@ export const ServiceCard = ({ service }: { service: Service }) => {
               className="rounded-xl border border-border px-4 py-2 text-sm"
               onClick={() => setIsEditing(true)}
             >
-              Edit
+              Editar
             </button>
             <ActionForm
               action={deleteServiceAction}
-              successMessage="Service deleted"
+              successMessage="Servicio eliminado"
             >
               <input type="hidden" name="service_id" value={service.id} />
               <SubmitButton
                 variant="destructive"
                 onClick={(event) => {
-                  if (!window.confirm("Delete this service?")) {
+                  if (!window.confirm("¿Eliminar este servicio?")) {
                     event.preventDefault();
                   }
                 }}
               >
-                Delete
+                Eliminar
               </SubmitButton>
             </ActionForm>
           </div>

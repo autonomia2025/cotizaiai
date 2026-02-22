@@ -15,7 +15,7 @@ export const createCustomer = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -43,7 +43,7 @@ export const updateCustomer = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -67,7 +67,7 @@ export const updateCustomer = async (
 export const deleteCustomer = async (id: string): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -90,7 +90,7 @@ export const updateCustomerAction = async (
 ): Promise<ActionResult> => {
   const customerId = String(formData.get("customer_id") || "");
   if (!customerId) {
-    return { error: "Missing customer." };
+    return { error: "Falta el cliente." };
   }
   return updateCustomer(customerId, formData);
 };
@@ -101,7 +101,7 @@ export const deleteCustomerAction = async (
 ): Promise<ActionResult> => {
   const customerId = String(formData.get("customer_id") || "");
   if (!customerId) {
-    return { error: "Missing customer." };
+    return { error: "Falta el cliente." };
   }
   const result = await deleteCustomer(customerId);
   if (result.error) {

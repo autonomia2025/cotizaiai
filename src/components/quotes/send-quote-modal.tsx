@@ -44,7 +44,7 @@ export const SendQuoteModal = ({
     }
 
     if (state?.success) {
-      toast.success("Quote sent");
+      toast.success("Cotizacion enviada");
       setOpen(false);
     }
   }, [state]);
@@ -52,23 +52,23 @@ export const SendQuoteModal = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Preview &amp; Send</Button>
+        <Button>Previsualizar y enviar</Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Email preview</DialogTitle>
+          <DialogTitle>Previsualizacion del email</DialogTitle>
           <DialogDescription>
-            Review the email before sending.
+            Revisa el email antes de enviarlo.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-2 text-sm">
           <p>
-            <span className="font-semibold">To:</span> {customerName} &lt;
+            <span className="font-semibold">Para:</span> {customerName} &lt;
             {customerEmail}&gt;
           </p>
           <p>
-            <span className="font-semibold">Subject:</span> {subject}
+            <span className="font-semibold">Asunto:</span> {subject}
           </p>
         </div>
 

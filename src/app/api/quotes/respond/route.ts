@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
   if (!quoteId || (action !== "accepted" && action !== "rejected")) {
     return NextResponse.json(
-      { success: false, error: "Invalid request" },
+      { success: false, error: "Solicitud invalida" },
       { status: 400 }
     );
   }
@@ -28,14 +28,14 @@ export async function POST(request: Request) {
 
   if (!quote) {
     return NextResponse.json(
-      { success: false, error: "Quote not found" },
+      { success: false, error: "Cotizacion no encontrada" },
       { status: 404 }
     );
   }
 
   if (quote.status !== "sent") {
     return NextResponse.json(
-      { success: false, error: "Quote already responded" },
+      { success: false, error: "Cotizacion ya respondida" },
       { status: 400 }
     );
   }
@@ -73,18 +73,21 @@ export async function POST(request: Request) {
   const toEmail = emailSettings?.from_email;
   if (toEmail) {
     const orgName = emailSettings?.from_name ?? organization?.name ?? "QuoteAI";
+    const actionLabel = action === "accepted" ? "aceptada" : "rechazada";
     const html = `
       <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
-        <p>${customer?.name ?? "A customer"} has ${action} the quote.</p>
-        <p><strong>Quote:</strong> ${quote.title}</p>
-        <p><strong>Status:</strong> ${action}</p>
+        <p>${customer?.name ?? "Un cliente"} ha ${
+          action === "accepted" ? "aceptado" : "rechazado"
+        } la cotizacion.</p>
+        <p><strong>Cotizacion:</strong> ${quote.title}</p>
+        <p><strong>Estado:</strong> ${actionLabel}</p>
       </div>
     `;
 
     await sendQuoteEmail({
       to: toEmail,
       from: `${orgName} <${toEmail}>`,
-      subject: `Quote ${action}: ${quote.title}`,
+      subject: `Cotizacion ${actionLabel}: ${quote.title}`,
       html,
     });
   }

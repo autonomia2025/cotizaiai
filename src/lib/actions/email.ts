@@ -14,7 +14,7 @@ export const sendThreadReply = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -26,7 +26,7 @@ export const sendThreadReply = async (
     .single();
 
   if (!thread) {
-    return { error: "Thread not found." };
+    return { error: "Conversacion no encontrada." };
   }
 
   const { data: organization } = await supabase
@@ -49,7 +49,7 @@ export const sendThreadReply = async (
     .single();
 
   if (!organization || !customer) {
-    return { error: "Missing email data." };
+    return { error: "Faltan datos de email." };
   }
 
   const fromName = emailSettings?.from_name ?? organization.name;
@@ -57,7 +57,7 @@ export const sendThreadReply = async (
 
   const html = `
     <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
-      <p>Hi ${customer.name},</p>
+      <p>Hola ${customer.name},</p>
       <p>${body.replace(/\n/g, "<br />")}</p>
       <p>${emailSettings?.signature ?? ""}</p>
     </div>
@@ -66,7 +66,7 @@ export const sendThreadReply = async (
   await sendQuoteEmail({
     to: customer.email,
     from: `${fromName} <${fromEmail}>`,
-    subject: thread.subject ?? "QuoteAI Reply",
+    subject: thread.subject ?? "Respuesta QuoteAI",
     html,
     replyTo: emailSettings?.reply_to ?? fromEmail,
     headers: { "X-QuoteAI-Thread-Id": thread.id },

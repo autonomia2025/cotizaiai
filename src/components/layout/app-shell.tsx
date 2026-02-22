@@ -12,12 +12,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: BarChart3 },
-  { name: "Customers", href: "/customers", icon: Users },
-  { name: "Services", href: "/services", icon: Layers },
-  { name: "Quotes", href: "/quotes", icon: FileText },
-  { name: "Email Threads", href: "/email-threads", icon: Mail },
-  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Panel", href: "/dashboard", icon: BarChart3 },
+  { name: "Clientes", href: "/customers", icon: Users },
+  { name: "Servicios", href: "/services", icon: Layers },
+  { name: "Cotizaciones", href: "/quotes", icon: FileText },
+  { name: "Correos", href: "/email-threads", icon: Mail },
+  { name: "Configuracion", href: "/settings", icon: Settings },
 ];
 
 type AppShellProps = {
@@ -34,7 +34,7 @@ export const AppShell = ({ children }: AppShellProps) => {
               <div className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 QuoteAI
               </div>
-              <p className="mt-2 text-2xl font-semibold">Sales OS</p>
+              <p className="mt-2 text-2xl font-semibold">Sistema comercial</p>
             </div>
             <nav className="flex flex-col gap-2">
               {navigation.map((item) => {
@@ -54,12 +54,12 @@ export const AppShell = ({ children }: AppShellProps) => {
               })}
             </nav>
             <div className="mt-auto rounded-2xl border border-border/70 bg-gradient-to-br from-white to-muted p-4">
-              <p className="text-sm font-semibold">AI Agent Ready</p>
+              <p className="text-sm font-semibold">Agente listo</p>
               <p className="mt-2 text-xs text-muted-foreground">
-                Automate quotes, follow-ups, and reply drafts.
+                Automatiza cotizaciones, seguimientos y borradores de respuesta.
               </p>
-              <Button className="mt-4 w-full" size="sm">
-                Open Agent
+              <Button className="mt-4 w-full" size="sm" disabled>
+                Proximamente
               </Button>
             </div>
           </div>

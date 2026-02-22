@@ -26,15 +26,15 @@ export const QuoteResponseButtons = ({
       });
       const result = await response.json();
       if (!response.ok || result?.error) {
-        toast.error(result?.error ?? "Unable to update quote");
+        toast.error(result?.error ?? "No se pudo actualizar la cotizacion");
         return;
       }
       toast.success(
-        action === "accepted" ? "Quote accepted" : "Quote rejected"
+        action === "accepted" ? "Cotizacion aceptada" : "Cotizacion rechazada"
       );
       router.refresh();
     } catch (error) {
-      toast.error("Unable to update quote");
+      toast.error("No se pudo actualizar la cotizacion");
     } finally {
       setPending(false);
     }
@@ -43,7 +43,7 @@ export const QuoteResponseButtons = ({
   if (status === "accepted") {
     return (
       <p className="mt-6 text-sm font-semibold text-emerald-600">
-        ✓ Quote accepted
+        ✓ Cotizacion aceptada
       </p>
     );
   }
@@ -51,7 +51,7 @@ export const QuoteResponseButtons = ({
   if (status === "rejected") {
     return (
       <p className="mt-6 text-sm font-semibold text-red-500">
-        ✗ Quote rejected
+        ✗ Cotizacion rechazada
       </p>
     );
   }

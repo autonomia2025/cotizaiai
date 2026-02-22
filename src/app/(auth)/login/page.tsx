@@ -11,22 +11,27 @@ export default function LoginPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           QuoteAI
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Welcome back</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Bienvenido de vuelta</h1>
         <p className="text-sm text-muted-foreground">
-          Sign in to access your workspace.
+          Inicia sesion para acceder a tu workspace.
         </p>
       </div>
 
       <ActionForm action={signIn} className="space-y-4">
         <Input name="email" type="email" placeholder="Email" required />
-        <Input name="password" type="password" placeholder="Password" required />
-        <SubmitButton className="w-full">Sign in</SubmitButton>
+        <Input
+          name="password"
+          type="password"
+          placeholder="Contrasena"
+          required
+        />
+        <SubmitButton className="w-full">Ingresar</SubmitButton>
       </ActionForm>
 
       <p className="text-sm text-muted-foreground">
-        Need an account?{" "}
+        ¿No tienes cuenta?{" "}
         <Link className="font-semibold text-foreground" href="/signup">
-          Create one
+          Crear cuenta
         </Link>
       </p>
     </div>

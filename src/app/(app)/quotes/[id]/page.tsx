@@ -46,7 +46,7 @@ export default async function QuoteDetailPage({ params }: PageProps) {
     .maybeSingle();
 
   if (!quote) {
-    return <div>Quote not found.</div>;
+    return <div>Cotizacion no encontrada.</div>;
   }
 
   const { data: customer } = await supabase
@@ -60,13 +60,13 @@ export default async function QuoteDetailPage({ params }: PageProps) {
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Quote
+          Cotizacion
         </p>
         <h1 className="mt-2 text-3xl font-semibold">{quote.title}</h1>
         <div className="mt-4 max-w-xs">
           <ActionForm
             action={updateQuoteStatusAction}
-            successMessage="Status updated"
+            successMessage="Estado actualizado"
           >
             <input type="hidden" name="quote_id" value={quote.id} />
             <QuoteStatusSelect value={quote.status} />
@@ -75,7 +75,7 @@ export default async function QuoteDetailPage({ params }: PageProps) {
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <p className="text-sm text-muted-foreground">Description</p>
+        <p className="text-sm text-muted-foreground">Descripcion</p>
         <p className="mt-2 text-base">{quote.description}</p>
         <div className="mt-6 space-y-3">
           {items?.map((item) => (
@@ -104,7 +104,7 @@ export default async function QuoteDetailPage({ params }: PageProps) {
         <div className="mt-6 flex flex-wrap gap-3">
           <ActionForm
             action={generateQuotePdfAction}
-            successMessage="PDF generated"
+            successMessage="PDF generado"
           >
             <input type="hidden" name="quote_id" value={quote.id} />
             <SubmitButton variant="secondary">Generar PDF</SubmitButton>
@@ -114,17 +114,17 @@ export default async function QuoteDetailPage({ params }: PageProps) {
               quoteId={quote.id}
               customerName={customer.name}
               customerEmail={customer.email}
-              subject={`Quote: ${quote.title}`}
+              subject={`Cotizacion: ${quote.title}`}
               html={`
                 <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
-                  <p>Hi ${customer.name},</p>
-                  <p>Attached is your sales quote from ${
+                  <p>Hola ${customer.name},</p>
+                  <p>Adjuntamos tu cotizacion de ${
                     organization?.name ?? "QuoteAI"
-                  }. Let us know if you'd like adjustments.</p>
+                  }. Si necesitas ajustes, respondeme a este correo.</p>
                   <p>
-                    View the quote here: <a href="${
+                    Ver la cotizacion aqui: <a href="${
                       process.env.NEXT_PUBLIC_APP_URL
-                    }/q/${quote.id}">Open Quote</a>
+                    }/q/${quote.id}">Ver cotizacion</a>
                   </p>
                   <p>${emailSettings?.signature ?? ""}</p>
                 </div>
@@ -133,24 +133,24 @@ export default async function QuoteDetailPage({ params }: PageProps) {
           ) : null}
           <ActionForm
             action={deleteQuoteAction}
-            successMessage="Quote deleted"
+            successMessage="Cotizacion eliminada"
           >
             <input type="hidden" name="quote_id" value={quote.id} />
             <SubmitButton
               variant="destructive"
               onClick={(event) => {
-                if (!window.confirm("Delete this quote?")) {
+                if (!window.confirm("¿Eliminar esta cotizacion?")) {
                   event.preventDefault();
                 }
               }}
             >
-              Delete quote
+              Eliminar cotizacion
             </SubmitButton>
           </ActionForm>
           {quote.pdf_url ? (
             <Button asChild variant="ghost">
               <a href={quote.pdf_url} target="_blank" rel="noreferrer">
-                View PDF
+                Ver PDF
               </a>
             </Button>
           ) : null}

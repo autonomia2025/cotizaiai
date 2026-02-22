@@ -18,7 +18,7 @@ export const signUpWithOrganization = async (
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {
-    return { error: error?.message ?? "Unable to sign up." };
+    return { error: error?.message ?? "No se pudo crear la cuenta." };
   }
 
   const admin = createSupabaseAdminClient();
@@ -29,7 +29,7 @@ export const signUpWithOrganization = async (
     .single();
 
   if (orgError || !org) {
-    return { error: orgError?.message ?? "Unable to create organization." };
+    return { error: orgError?.message ?? "No se pudo crear la organizacion." };
   }
 
   const { error: userError } = await admin.from("users").insert({

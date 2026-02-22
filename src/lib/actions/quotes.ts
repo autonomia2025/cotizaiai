@@ -18,11 +18,11 @@ export async function generateQuoteFromRequest(
   const request = String(formData.get("request") || "").trim();
 
   if (!customerId || !request) {
-    return { error: "Missing required fields" };
+    return { error: "Faltan campos requeridos" };
   }
 
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -46,7 +46,7 @@ export async function generateQuoteFromRequest(
     .eq("organization_id", organizationId);
 
   if (!organization || !customer || !services) {
-    return { error: "Missing data for quote generation." };
+    return { error: "Faltan datos para generar la cotizacion." };
   }
 
   const aiQuote = await generateQuoteWithAI({
@@ -88,7 +88,7 @@ export async function generateQuoteFromRequest(
   }[];
 
   if (sanitizedItems.length === 0) {
-    return { error: "AI could not map services to catalog." };
+    return { error: "La IA no pudo mapear servicios al catalogo." };
   }
 
   const totalPrice = sanitizedItems.reduce(
@@ -110,7 +110,7 @@ export async function generateQuoteFromRequest(
     .single();
 
   if (quoteError || !quote) {
-    return { error: quoteError?.message ?? "Unable to create quote." };
+    return { error: quoteError?.message ?? "No se pudo crear la cotizacion." };
   }
 
   const items = sanitizedItems.map((item) => ({
@@ -135,7 +135,7 @@ export const generateQuotePdf = async (
 ): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -150,7 +150,7 @@ export const generateQuotePdf = async (
     .single();
 
   if (!quote) {
-    return { error: "Quote not found." };
+    return { error: "Cotizacion no encontrada." };
   }
 
   const { data: organization } = await supabase
@@ -172,7 +172,7 @@ export const generateQuotePdf = async (
     .eq("quote_id", quoteId);
 
   if (!organization || !customer || !items) {
-    return { error: "Missing quote data." };
+    return { error: "Faltan datos de la cotizacion." };
   }
 
   const pdfBuffer = await generateQuotePdfBuffer({
@@ -194,7 +194,7 @@ export const generateQuotePdf = async (
     });
 
   if (uploadError || !upload) {
-    return { error: uploadError?.message ?? "Unable to upload PDF." };
+    return { error: uploadError?.message ?? "No se pudo subir el PDF." };
   }
 
   const { data: publicUrl } = supabase.storage
@@ -212,7 +212,7 @@ export const generateQuotePdf = async (
 export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -227,7 +227,7 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
     .single();
 
   if (!quote) {
-    return { error: "Quote not found." };
+    return { error: "Cotizacion no encontrada." };
   }
 
   const { data: organization } = await supabase
@@ -255,7 +255,7 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
     .eq("quote_id", quoteId);
 
   if (!organization || !customer || !items) {
-    return { error: "Missing quote data." };
+    return { error: "Faltan datos de la cotizacion." };
   }
 
   const pdfBuffer = await generateQuotePdfBuffer({
@@ -277,7 +277,7 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
     });
 
   if (uploadError || !upload) {
-    return { error: uploadError?.message ?? "Unable to upload PDF." };
+    return { error: uploadError?.message ?? "No se pudo subir el PDF." };
   }
 
   const { data: publicUrl } = supabase.storage
@@ -289,7 +289,7 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
     .update({ pdf_url: publicUrl.publicUrl, status: "sent" })
     .eq("id", quoteId);
 
-  const threadSubject = `Quote: ${quote.title}`;
+  const threadSubject = `Cotizacion: ${quote.title}`;
   const { data: thread } = await supabase
     .from("email_threads")
     .insert({
@@ -305,10 +305,10 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
   const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/q/${quote.id}`;
   const html = `
     <div style="font-family: 'Helvetica Neue', Arial, sans-serif; color: #111827;">
-      <p>Hi ${customer.name},</p>
-      <p>Attached is your sales quote from ${organization.name}. Let us know if you'd like adjustments.</p>
+      <p>Hola ${customer.name},</p>
+      <p>Adjuntamos tu cotizacion de ${organization.name}. Si necesitas ajustes, respondeme a este correo.</p>
       <p>
-        View the quote here: <a href="${quoteUrl}">Open Quote</a>
+        Ver la cotizacion aqui: <a href="${quoteUrl}">Ver cotizacion</a>
       </p>
       <p>${emailSettings?.signature ?? ""}</p>
     </div>
@@ -349,7 +349,7 @@ export const sendQuote = async (quoteId: string): Promise<ActionResult> => {
 export const deleteQuote = async (id: string): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -372,7 +372,7 @@ export const updateQuoteStatus = async (
 ): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -395,7 +395,7 @@ export const generateQuotePdfAction = async (
 ): Promise<ActionResult> => {
   const quoteId = String(formData.get("quote_id") || "");
   if (!quoteId) {
-    return { error: "Missing quote." };
+    return { error: "Falta la cotizacion." };
   }
   return generateQuotePdf(quoteId);
 };
@@ -406,7 +406,7 @@ export const sendQuoteAction = async (
 ): Promise<ActionResult> => {
   const quoteId = String(formData.get("quote_id") || "");
   if (!quoteId) {
-    return { error: "Missing quote." };
+    return { error: "Falta la cotizacion." };
   }
   return sendQuote(quoteId);
 };
@@ -417,7 +417,7 @@ export const deleteQuoteAction = async (
 ): Promise<ActionResult> => {
   const quoteId = String(formData.get("quote_id") || "");
   if (!quoteId) {
-    return { error: "Missing quote." };
+    return { error: "Falta la cotizacion." };
   }
   const result = await deleteQuote(quoteId);
   if (result.error) {
@@ -434,7 +434,7 @@ export const updateQuoteStatusAction = async (
   const quoteId = String(formData.get("quote_id") || "");
   const status = String(formData.get("status") || "");
   if (!quoteId) {
-    return { error: "Missing quote." };
+    return { error: "Falta la cotizacion." };
   }
 
   if (
@@ -443,7 +443,7 @@ export const updateQuoteStatusAction = async (
     status !== "accepted" &&
     status !== "rejected"
   ) {
-    return { error: "Invalid status." };
+    return { error: "Estado invalido." };
   }
 
   return updateQuoteStatus(quoteId, status);

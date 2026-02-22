@@ -11,10 +11,10 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-3">
           <Button variant="ghost" asChild>
-            <Link href="/login">Login</Link>
+            <Link href="/login">Ingresar</Link>
           </Button>
           <Button asChild>
-            <Link href="/signup">Get Started</Link>
+            <Link href="/signup">Comenzar</Link>
           </Button>
         </div>
       </header>
@@ -23,21 +23,21 @@ export default function Home() {
         <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col gap-6">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              AI Sales Quoting OS
+              Sistema de cotizaciones con IA
             </p>
             <h1 className="text-4xl font-semibold leading-tight text-foreground md:text-6xl">
-              Generate, send, and follow up on quotes in minutes.
+              Genera, envia y hace seguimiento de cotizaciones en minutos.
             </h1>
             <p className="max-w-xl text-lg text-muted-foreground">
-              QuoteAI combines AI quoting, email automation, and PDF delivery in a
-              single platform built for multi-tenant sales teams.
+              QuoteAI combina IA, automatizacion de emails y PDFs en una sola
+              plataforma para equipos comerciales multi-tenant.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" asChild>
-                <Link href="/signup">Start free trial</Link>
+                <Link href="/signup">Empezar prueba</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/dashboard">Open demo workspace</Link>
+                <Link href="/dashboard">Abrir demo</Link>
               </Button>
             </div>
           </div>
@@ -46,15 +46,17 @@ export default function Home() {
             <div className="relative flex flex-col gap-6">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                  Live Workspace
+                  Workspace en vivo
                 </p>
-                <h2 className="mt-3 text-2xl font-semibold">Today&apos;s activity</h2>
+                <h2 className="mt-3 text-2xl font-semibold">
+                  Actividad de hoy
+                </h2>
               </div>
               <div className="grid gap-4">
                 {[
-                  "AI generated 3 quote drafts",
-                  "2 proposals accepted",
-                  "$84k revenue closed this week",
+                  "IA genero 3 borradores",
+                  "2 propuestas aceptadas",
+                  "$84k en ingresos esta semana",
                 ].map((item) => (
                   <div
                     key={item}
@@ -65,8 +67,8 @@ export default function Home() {
                 ))}
               </div>
               <div className="rounded-2xl bg-muted/60 p-4 text-xs text-muted-foreground">
-                QuoteAI AI agent monitors your inbox and prepares replies for
-                approval.
+                El agente de QuoteAI monitorea tu bandeja y prepara respuestas
+                para aprobacion.
               </div>
             </div>
           </Card>
@@ -75,19 +77,19 @@ export default function Home() {
         <section className="grid gap-6 md:grid-cols-3">
           {[
             {
-              title: "Multi-tenant architecture",
+              title: "Arquitectura multi-tenant",
               description:
-                "Securely isolate data by organization with strict row-level security.",
+                "Aisla datos por organizacion con seguridad a nivel de fila.",
             },
             {
-              title: "AI quote generation",
+              title: "Generacion con IA",
               description:
-                "Generate structured pricing, line items, and summaries instantly.",
+                "Genera precios, items y resumenes en segundos.",
             },
             {
-              title: "Email agent workflows",
+              title: "Flujos de email",
               description:
-                "Send, receive, and draft replies with embedded analytics.",
+                "Envia, recibe y redacta respuestas con analitica integrada.",
             },
           ].map((card) => (
             <Card key={card.title} className="border-border/60 bg-white/70 p-6">

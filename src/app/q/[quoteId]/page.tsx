@@ -24,10 +24,12 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
             QuoteAI
           </p>
-          <h1 className="mt-4 text-2xl font-semibold">Quote not found</h1>
+          <h1 className="mt-4 text-2xl font-semibold">
+            Cotizacion no encontrada
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            The quote link might be expired or incorrect. Please request a new
-            one from the sender.
+            El enlace puede estar expirado o ser incorrecto. Solicita uno nuevo
+            al remitente.
           </p>
         </div>
       </div>
@@ -75,10 +77,10 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
           <div className="flex items-start justify-between gap-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                Prepared for
+                Preparado para
               </p>
               <p className="mt-2 text-lg font-semibold">
-                {customer?.name ?? "Customer"}
+                {customer?.name ?? "Cliente"}
               </p>
               {customer?.company ? (
                 <p className="text-sm text-muted-foreground">
@@ -98,7 +100,7 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
 
           <div className="mt-8">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Description
+              Descripcion
             </p>
             <p className="mt-3 text-base text-foreground">
               {quote.description}
@@ -133,7 +135,7 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
               rel="noreferrer"
               className="mt-6 inline-flex text-sm font-medium text-foreground underline"
             >
-              Download PDF
+              Descargar PDF
             </a>
           ) : null}
         </Card>

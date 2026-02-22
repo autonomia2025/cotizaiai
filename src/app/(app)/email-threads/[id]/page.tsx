@@ -28,7 +28,7 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
     .order("created_at", { ascending: true });
 
   if (!thread) {
-    return <div>Thread not found.</div>;
+    return <div>Conversacion no encontrada.</div>;
   }
 
   const suggested = messages
@@ -39,10 +39,10 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Email Thread
+          Correo
         </p>
         <h1 className="mt-2 text-3xl font-semibold">
-          {thread.subject ?? "Quote conversation"}
+          {thread.subject ?? "Conversacion de cotizacion"}
         </h1>
       </div>
 
@@ -59,7 +59,9 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
             >
               <p className="whitespace-pre-wrap">{message.content}</p>
               {message.is_suggested ? (
-                <p className="mt-2 text-xs text-muted-foreground">AI suggested</p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Sugerido por IA
+                </p>
               ) : null}
             </div>
           ))}
@@ -67,21 +69,21 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
       </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Reply</h2>
+        <h2 className="text-lg font-semibold">Responder</h2>
         <ActionForm
           action={sendThreadReply}
           className="mt-4 space-y-4"
-          successMessage="Reply sent"
+          successMessage="Respuesta enviada"
         >
           <input type="hidden" name="thread_id" value={thread.id} />
           <Textarea
             name="body"
             rows={5}
-            placeholder="Write your reply"
+            placeholder="Escribe tu respuesta"
             defaultValue={suggested?.content ?? ""}
             required
           />
-          <SubmitButton>Send reply</SubmitButton>
+          <SubmitButton>Enviar respuesta</SubmitButton>
         </ActionForm>
       </Card>
     </div>

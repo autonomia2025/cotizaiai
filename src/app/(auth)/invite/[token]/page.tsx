@@ -20,9 +20,9 @@ export default async function InvitePage({ params }: PageProps) {
   if (!invitation || invitation.accepted_at) {
     return (
       <Card className="border-border/60 bg-white/70 p-8">
-        <p className="text-sm font-semibold">Invitation invalid</p>
+        <p className="text-sm font-semibold">Invitacion invalida</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          This invite link is invalid or has already been used.
+          Este enlace es invalido o ya fue utilizado.
         </p>
       </Card>
     );
@@ -34,22 +34,22 @@ export default async function InvitePage({ params }: PageProps) {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           QuoteAI
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Accept invitation</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Aceptar invitacion</h1>
         <p className="text-sm text-muted-foreground">
-          Join {invitation.email} invitation.
+          Unete con el email {invitation.email}.
         </p>
       </div>
 
       <ActionForm action={acceptInvitation} className="space-y-4">
         <input type="hidden" name="token" value={params.token} />
-        <Input name="name" placeholder="Your name" required />
+        <Input name="name" placeholder="Tu nombre" required />
         <Input
           name="password"
           type="password"
-          placeholder="Create a password"
+          placeholder="Crea una contrasena"
           required
         />
-        <SubmitButton className="w-full">Create account</SubmitButton>
+        <SubmitButton className="w-full">Crear cuenta</SubmitButton>
       </ActionForm>
     </div>
   );

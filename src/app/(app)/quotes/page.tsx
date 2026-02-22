@@ -22,6 +22,13 @@ export default async function QuotesPage() {
     rejected: "bg-red-100 text-red-700",
   };
 
+  const statusLabels: Record<string, string> = {
+    draft: "borrador",
+    sent: "enviada",
+    accepted: "aceptada",
+    rejected: "rechazada",
+  };
+
   const { data: customers } = await supabase
     .from("customers")
     .select("id, name, email")
@@ -38,13 +45,13 @@ export default async function QuotesPage() {
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Quotes
+          Cotizaciones
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">AI-generated quotes</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Cotizaciones con IA</h1>
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Create new quote</h2>
+        <h2 className="text-lg font-semibold">Crear nueva cotizacion</h2>
         <ActionForm
           action={generateQuoteFromRequest}
           className="mt-4 grid gap-4"
@@ -52,11 +59,11 @@ export default async function QuotesPage() {
           <CustomerSelect customers={customers ?? []} />
           <Textarea
             name="request"
-            placeholder="Describe what the customer needs"
+            placeholder="Describe lo que necesita el cliente"
             rows={4}
             required
           />
-          <SubmitButton>Generate quote with AI</SubmitButton>
+          <SubmitButton>Generar cotizacion con IA</SubmitButton>
         </ActionForm>
       </Card>
 
@@ -64,10 +71,10 @@ export default async function QuotesPage() {
         {quotes?.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center">
             <p className="text-sm font-medium text-muted-foreground">
-              No quotes yet
+              Aun no hay cotizaciones
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Generate your first quote above
+              Genera tu primera cotizacion arriba
             </p>
           </div>
         ) : (
@@ -80,7 +87,7 @@ export default async function QuotesPage() {
                     className={`mt-2 w-fit ${statusStyles[quote.status] ?? ""}`}
                     variant="secondary"
                   >
-                    {quote.status}
+                    {statusLabels[quote.status] ?? quote.status}
                   </Badge>
                 </div>
                 <p className="text-sm font-semibold">

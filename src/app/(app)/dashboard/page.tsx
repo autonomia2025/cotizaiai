@@ -35,20 +35,27 @@ export default async function DashboardPage() {
     .order("created_at", { ascending: false })
     .limit(5);
 
+  const statusLabels: Record<string, string> = {
+    draft: "Borrador",
+    sent: "Enviada",
+    accepted: "Aceptada",
+    rejected: "Rechazada",
+  };
+
   return (
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Dashboard
+          Panel
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Overview</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Resumen</h1>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         {[
-          { label: "Total Quotes", value: totalQuotes ?? 0 },
-          { label: "Accepted Quotes", value: acceptedQuotes ?? 0 },
-          { label: "Revenue", value: `$${revenueTotal.toFixed(2)}` },
+          { label: "Cotizaciones", value: totalQuotes ?? 0 },
+          { label: "Aceptadas", value: acceptedQuotes ?? 0 },
+          { label: "Ingresos", value: `$${revenueTotal.toFixed(2)}` },
         ].map((stat) => (
           <Card key={stat.label} className="border-border/60 bg-white/70 p-6">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
@@ -61,16 +68,16 @@ export default async function DashboardPage() {
 
       <Card className="border-border/60 bg-white/70 p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Recent Activity</h2>
+          <h2 className="text-lg font-semibold">Actividad reciente</h2>
         </div>
         <div className="mt-6 space-y-4">
           {recentQuotes?.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-10 text-center">
               <p className="text-sm font-medium text-muted-foreground">
-                No recent activity yet
+                Aun no hay actividad reciente
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Generate your first quote to see updates here
+                Genera tu primera cotizacion para ver novedades aqui
               </p>
             </div>
           ) : (
@@ -80,7 +87,7 @@ export default async function DashboardPage() {
                   <div>
                     <p className="text-sm font-medium">{quote.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      {quote.status}
+                      {statusLabels[quote.status] ?? quote.status}
                     </p>
                   </div>
                   <p className="text-sm font-semibold">

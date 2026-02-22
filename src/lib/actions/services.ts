@@ -14,7 +14,7 @@ export const createService = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -42,7 +42,7 @@ export const updateService = async (
 
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -66,7 +66,7 @@ export const updateService = async (
 export const deleteService = async (id: string): Promise<ActionResult> => {
   const organizationId = await getCurrentOrganizationId();
   if (!organizationId) {
-    return { error: "Unauthorized" };
+    return { error: "No autorizado" };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -89,7 +89,7 @@ export const updateServiceAction = async (
 ): Promise<ActionResult> => {
   const serviceId = String(formData.get("service_id") || "");
   if (!serviceId) {
-    return { error: "Missing service." };
+    return { error: "Falta el servicio." };
   }
   return updateService(serviceId, formData);
 };
@@ -100,7 +100,7 @@ export const deleteServiceAction = async (
 ): Promise<ActionResult> => {
   const serviceId = String(formData.get("service_id") || "");
   if (!serviceId) {
-    return { error: "Missing service." };
+    return { error: "Falta el servicio." };
   }
   return deleteService(serviceId);
 };

@@ -44,91 +44,91 @@ export default async function SettingsPage() {
     <div className="space-y-8">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Settings
+          Configuracion
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Workspace settings</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Ajustes del workspace</h1>
       </div>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Organization</h2>
+        <h2 className="text-lg font-semibold">Organizacion</h2>
         <ActionForm
           action={updateOrganization}
           className="mt-4 grid gap-4"
-          successMessage="Organization updated"
+          successMessage="Organizacion actualizada"
         >
           <Input
             name="name"
-            placeholder="Organization name"
+            placeholder="Nombre de la organizacion"
             defaultValue={organization?.name ?? ""}
             required
           />
           <Textarea
             name="description"
-            placeholder="Organization description"
+            placeholder="Descripcion de la organizacion"
             rows={3}
             defaultValue={organization?.description ?? ""}
           />
           <Input
             name="logo_url"
-            placeholder="Logo URL"
+            placeholder="URL del logo"
             defaultValue={organization?.logo_url ?? ""}
           />
-          <SubmitButton>Save organization</SubmitButton>
+          <SubmitButton>Guardar organizacion</SubmitButton>
         </ActionForm>
       </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Email settings</h2>
+        <h2 className="text-lg font-semibold">Configuracion de email</h2>
         <ActionForm
           action={updateEmailSettings}
           className="mt-4 grid gap-4"
-          successMessage="Email settings updated"
+          successMessage="Email actualizado"
         >
           <div className="grid gap-4 md:grid-cols-2">
             <Input
               name="from_name"
-              placeholder="From name"
+              placeholder="Nombre del remitente"
               defaultValue={emailSettings?.from_name ?? ""}
             />
             <Input
               name="from_email"
-              placeholder="From email"
+              placeholder="Email del remitente"
               defaultValue={emailSettings?.from_email ?? ""}
             />
           </div>
           <Input
             name="reply_to"
-            placeholder="Reply-to email"
+            placeholder="Email de respuesta"
             defaultValue={emailSettings?.reply_to ?? ""}
           />
           <Textarea
             name="signature"
-            placeholder="Email signature"
+            placeholder="Firma de email"
             rows={4}
             defaultValue={emailSettings?.signature ?? ""}
           />
-          <SubmitButton>Save email settings</SubmitButton>
+          <SubmitButton>Guardar email</SubmitButton>
         </ActionForm>
       </Card>
 
       <Card className="border-border/60 bg-white/70 p-6">
-        <h2 className="text-lg font-semibold">Team members</h2>
+        <h2 className="text-lg font-semibold">Equipo</h2>
         <ActionForm
           action={inviteMember}
           className="mt-4 grid gap-4 md:grid-cols-[1fr_auto]"
-          successMessage="Invite sent"
+          successMessage="Invitacion enviada"
         >
-          <Input name="email" placeholder="member@company.com" required />
-          <SubmitButton>Send invite</SubmitButton>
+          <Input name="email" placeholder="miembro@empresa.com" required />
+          <SubmitButton>Enviar invitacion</SubmitButton>
         </ActionForm>
 
         <div className="mt-6 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            Pending invitations
+            Invitaciones pendientes
           </p>
           {invitations?.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No pending invitations
+              No hay invitaciones pendientes
             </p>
           ) : (
             invitations?.map((invite) => (
@@ -139,10 +139,10 @@ export default async function SettingsPage() {
                 <div>
                   <p className="text-sm font-medium">{invite.email}</p>
                   <p className="text-xs text-muted-foreground">
-                    Invited {new Date(invite.created_at).toLocaleDateString()}
+                    Invitado el {new Date(invite.created_at).toLocaleDateString()}
                   </p>
                 </div>
-                <span className="text-xs text-muted-foreground">Pending</span>
+                <span className="text-xs text-muted-foreground">Pendiente</span>
               </div>
             ))
           )}
@@ -150,10 +150,10 @@ export default async function SettingsPage() {
 
         <div className="mt-6 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            Members
+            Miembros
           </p>
           {members?.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No members yet</p>
+            <p className="text-sm text-muted-foreground">Aun no hay miembros</p>
           ) : (
             members?.map((member) => (
               <div
