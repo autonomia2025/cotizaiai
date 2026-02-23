@@ -82,8 +82,8 @@ export default async function DashboardPage() {
             </div>
           ) : (
             recentQuotes?.map((quote) => (
-              <Link key={quote.id} href={`/quotes/${quote.id}`}>
-                <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3 transition hover:shadow-sm cursor-pointer">
+              <Link key={quote.id} href={`/quotes/${quote.id}`} className="block">
+                <div className="flex w-full items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3 transition hover:shadow-sm cursor-pointer">
                   <div>
                     <p className="text-sm font-medium">{quote.title}</p>
                     <p className="text-xs text-muted-foreground">

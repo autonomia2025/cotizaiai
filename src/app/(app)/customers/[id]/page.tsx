@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/ui/submit-button";
@@ -122,20 +123,19 @@ export default async function CustomerDetailPage({ params }: PageProps) {
             </p>
           ) : (
             quotes?.map((quote) => (
-              <div
-                key={quote.id}
-              className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
-              >
-                <div>
-                  <p className="text-sm font-medium">{quote.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {statusLabels[quote.status] ?? quote.status}
+              <Link key={quote.id} href={`/quotes/${quote.id}`} className="block">
+                <div className="flex w-full items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3 transition hover:shadow-sm cursor-pointer">
+                  <div>
+                    <p className="text-sm font-medium">{quote.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {statusLabels[quote.status] ?? quote.status}
+                    </p>
+                  </div>
+                  <p className="text-sm font-semibold">
+                    ${Number(quote.total_price).toFixed(2)}
                   </p>
                 </div>
-                <p className="text-sm font-semibold">
-                  ${Number(quote.total_price).toFixed(2)}
-                </p>
-              </div>
+              </Link>
             ))
           )}
         </div>

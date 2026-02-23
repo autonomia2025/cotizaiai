@@ -39,8 +39,12 @@ export default async function EmailThreadsPage() {
           </div>
         ) : (
           threads?.map((thread) => (
-            <Link key={thread.id} href={`/email-threads/${thread.id}`}>
-              <Card className="flex items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
+            <Link
+              key={thread.id}
+              href={`/email-threads/${thread.id}`}
+              className="block"
+            >
+              <Card className="flex w-full items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">
                     {thread.subject ?? "Conversacion de cotizacion"}

@@ -79,8 +79,8 @@ export default async function QuotesPage() {
           </div>
         ) : (
           quotes?.map((quote) => (
-            <Link key={quote.id} href={`/quotes/${quote.id}`}>
-              <Card className="flex items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
+            <Link key={quote.id} href={`/quotes/${quote.id}`} className="block">
+              <Card className="flex w-full items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">{quote.title}</p>
                   <Badge

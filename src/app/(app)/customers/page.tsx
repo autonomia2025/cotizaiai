@@ -53,8 +53,12 @@ export default async function CustomersPage() {
           </div>
         ) : (
           customers?.map((customer) => (
-            <Link key={customer.id} href={`/customers/${customer.id}`}>
-            <Card className="flex items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
+            <Link
+              key={customer.id}
+              href={`/customers/${customer.id}`}
+              className="block"
+            >
+              <Card className="flex w-full items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">{customer.name}</p>
                   <p className="text-xs text-muted-foreground">
