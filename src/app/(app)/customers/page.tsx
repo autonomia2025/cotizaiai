@@ -25,7 +25,7 @@ export default async function CustomersPage() {
         <h1 className="mt-2 text-3xl font-semibold">Directorio de clientes</h1>
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Crear cliente</h2>
         <ActionForm
           action={createCustomer}
@@ -43,7 +43,7 @@ export default async function CustomersPage() {
 
       <div className="grid gap-4">
         {customers?.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center">
+          <div className="rounded-lg border border-dashed border-gray-100 bg-white px-6 py-12 text-center">
             <p className="text-sm font-medium text-muted-foreground">
               Aun no hay clientes
             </p>
@@ -54,7 +54,7 @@ export default async function CustomersPage() {
         ) : (
           customers?.map((customer) => (
             <Link key={customer.id} href={`/customers/${customer.id}`}>
-              <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
+            <Card className="flex items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">{customer.name}</p>
                   <p className="text-xs text-muted-foreground">

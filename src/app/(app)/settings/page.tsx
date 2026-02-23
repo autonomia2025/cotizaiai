@@ -49,7 +49,7 @@ export default async function SettingsPage() {
         <h1 className="mt-2 text-3xl font-semibold">Ajustes del workspace</h1>
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Organizacion</h2>
         <ActionForm
           action={updateOrganization}
@@ -77,7 +77,7 @@ export default async function SettingsPage() {
         </ActionForm>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Configuracion de email</h2>
         <ActionForm
           action={updateEmailSettings}
@@ -111,7 +111,7 @@ export default async function SettingsPage() {
         </ActionForm>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Equipo</h2>
         <ActionForm
           action={inviteMember}
@@ -134,7 +134,7 @@ export default async function SettingsPage() {
             invitations?.map((invite) => (
               <div
                 key={invite.id}
-                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+                className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
               >
                 <div>
                   <p className="text-sm font-medium">{invite.email}</p>
@@ -158,7 +158,7 @@ export default async function SettingsPage() {
             members?.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+                className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
               >
                 <div>
                   <p className="text-sm font-medium">

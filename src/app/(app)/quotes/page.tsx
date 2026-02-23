@@ -50,7 +50,7 @@ export default async function QuotesPage() {
         <h1 className="mt-2 text-3xl font-semibold">Cotizaciones con IA</h1>
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Crear nueva cotizacion</h2>
         <ActionForm
           action={generateQuoteFromRequest}
@@ -69,7 +69,7 @@ export default async function QuotesPage() {
 
       <div className="grid gap-4">
         {quotes?.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center">
+          <div className="rounded-lg border border-dashed border-gray-100 bg-white px-6 py-12 text-center">
             <p className="text-sm font-medium text-muted-foreground">
               Aun no hay cotizaciones
             </p>
@@ -80,7 +80,7 @@ export default async function QuotesPage() {
         ) : (
           quotes?.map((quote) => (
             <Link key={quote.id} href={`/quotes/${quote.id}`}>
-              <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
+              <Card className="flex items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">{quote.title}</p>
                   <Badge

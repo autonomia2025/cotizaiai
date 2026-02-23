@@ -57,7 +57,7 @@ export default async function DashboardPage() {
           { label: "Aceptadas", value: acceptedQuotes ?? 0 },
           { label: "Ingresos", value: `$${revenueTotal.toFixed(2)}` },
         ].map((stat) => (
-          <Card key={stat.label} className="border-border/60 bg-white/70 p-6">
+          <Card key={stat.label} className="border-gray-100 bg-white p-6 shadow-sm">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
               {stat.label}
             </p>
@@ -66,13 +66,13 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Actividad reciente</h2>
         </div>
         <div className="mt-6 space-y-4">
           {recentQuotes?.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-10 text-center">
+            <div className="rounded-lg border border-dashed border-gray-100 bg-white px-6 py-10 text-center">
               <p className="text-sm font-medium text-muted-foreground">
                 Aun no hay actividad reciente
               </p>
@@ -83,7 +83,7 @@ export default async function DashboardPage() {
           ) : (
             recentQuotes?.map((quote) => (
               <Link key={quote.id} href={`/quotes/${quote.id}`}>
-                <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3 transition hover:shadow-md cursor-pointer">
+                <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3 transition hover:shadow-sm cursor-pointer">
                   <div>
                     <p className="text-sm font-medium">{quote.title}</p>
                     <p className="text-xs text-muted-foreground">

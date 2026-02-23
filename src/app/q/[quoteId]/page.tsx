@@ -20,7 +20,7 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
   if (!quote) {
     return (
       <div className="min-h-screen px-6 py-16">
-        <div className="mx-auto w-full max-w-[700px] rounded-3xl border border-dashed border-border/60 bg-white/70 px-8 py-14 text-center shadow-xl shadow-muted/30">
+        <div className="mx-auto w-full max-w-[700px] rounded-xl border border-dashed border-gray-100 bg-white px-8 py-14 text-center shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
             QuoteAI
           </p>
@@ -73,7 +73,7 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
           ) : null}
         </div>
 
-        <Card className="border-border/60 bg-white/80 p-8 shadow-xl shadow-muted/40">
+        <Card className="border-gray-100 bg-white p-8 shadow-sm">
           <div className="flex items-start justify-between gap-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
@@ -111,7 +111,7 @@ export default async function PublicQuoteByIdPage({ params }: PageProps) {
             {items?.map((item) => (
               <div
                 key={item.name}
-                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+                className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
               >
                 <div>
                   <p className="text-sm font-medium">{item.name}</p>

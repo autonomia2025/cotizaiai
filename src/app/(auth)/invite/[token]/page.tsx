@@ -19,7 +19,7 @@ export default async function InvitePage({ params }: PageProps) {
 
   if (!invitation || invitation.accepted_at) {
     return (
-      <Card className="border-border/60 bg-white/70 p-8">
+      <Card className="border-gray-100 bg-white p-8 shadow-sm">
         <p className="text-sm font-semibold">Invitacion invalida</p>
         <p className="mt-2 text-sm text-muted-foreground">
           Este enlace es invalido o ya fue utilizado.

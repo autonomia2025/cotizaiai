@@ -10,7 +10,7 @@ export const QuoteStatusSelect = ({ value }: StatusSelectProps) => {
       name="status"
       defaultValue={value}
       onChange={(event) => event.currentTarget.form?.requestSubmit()}
-      className="h-10 w-full rounded-xl border border-border/60 bg-white/70 px-3 text-sm"
+      className="h-10 w-full rounded-lg border border-gray-100 bg-white px-3 text-sm"
     >
       <option value="draft">Borrador</option>
       <option value="sent">Enviada</option>

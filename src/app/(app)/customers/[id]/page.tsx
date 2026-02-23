@@ -55,7 +55,7 @@ export default async function CustomerDetailPage({ params }: PageProps) {
         ) : null}
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Editar cliente</h2>
         <ActionForm
           action={updateCustomerAction}
@@ -87,7 +87,7 @@ export default async function CustomerDetailPage({ params }: PageProps) {
         </ActionForm>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-destructive">
           Eliminar cliente
         </h2>
@@ -113,7 +113,7 @@ export default async function CustomerDetailPage({ params }: PageProps) {
         </ActionForm>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Cotizaciones recientes</h2>
         <div className="mt-4 space-y-3">
           {quotes?.length === 0 ? (
@@ -124,7 +124,7 @@ export default async function CustomerDetailPage({ params }: PageProps) {
             quotes?.map((quote) => (
               <div
                 key={quote.id}
-                className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
               >
                 <div>
                   <p className="text-sm font-medium">{quote.title}</p>

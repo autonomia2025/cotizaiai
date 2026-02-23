@@ -46,12 +46,12 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
         </h1>
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <div className="space-y-4">
           {messages?.map((message) => (
             <div
               key={message.id}
-              className={`max-w-xl rounded-2xl px-4 py-3 text-sm shadow-sm ${
+              className={`max-w-xl rounded-lg px-4 py-3 text-sm shadow-sm ${
                 message.direction === "inbound"
                   ? "bg-muted/60"
                   : "ml-auto bg-white"
@@ -68,7 +68,7 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
         </div>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Responder</h2>
         <ActionForm
           action={sendThreadReply}

@@ -26,7 +26,7 @@ export default async function ServicesPage() {
         <h1 className="mt-2 text-3xl font-semibold">Catalogo de servicios</h1>
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Crear servicio</h2>
         <ActionForm
           action={createService}
@@ -50,7 +50,7 @@ export default async function ServicesPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         {services?.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center md:col-span-2">
+          <div className="rounded-lg border border-dashed border-gray-100 bg-white px-6 py-12 text-center md:col-span-2">
             <p className="text-sm font-medium text-muted-foreground">
               Aun no hay servicios
             </p>

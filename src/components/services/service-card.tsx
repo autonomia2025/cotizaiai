@@ -19,7 +19,7 @@ export const ServiceCard = ({ service }: { service: Service }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <Card className="border-border/60 bg-white/70 p-6">
+    <Card className="border-gray-100 bg-white p-6 shadow-sm">
       {isEditing ? (
         <ActionForm
           action={updateServiceAction}
@@ -44,7 +44,7 @@ export const ServiceCard = ({ service }: { service: Service }) => {
             <SubmitButton>Guardar</SubmitButton>
             <button
               type="button"
-              className="rounded-xl border border-border px-4 py-2 text-sm"
+              className="rounded-lg border border-gray-100 px-4 py-2 text-sm"
               onClick={() => setIsEditing(false)}
             >
               Cancelar
@@ -65,7 +65,7 @@ export const ServiceCard = ({ service }: { service: Service }) => {
           <div className="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
-              className="rounded-xl border border-border px-4 py-2 text-sm"
+              className="rounded-lg border border-gray-100 px-4 py-2 text-sm"
               onClick={() => setIsEditing(true)}
             >
               Editar

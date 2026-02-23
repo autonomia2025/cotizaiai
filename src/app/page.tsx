@@ -41,8 +41,7 @@ export default function Home() {
               </Button>
             </div>
           </div>
-          <Card className="relative overflow-hidden border-border/60 bg-white/70 p-8 shadow-xl shadow-muted/40">
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/60 to-muted/70" />
+          <Card className="relative overflow-hidden border-gray-100 bg-white p-8 shadow-sm">
             <div className="relative flex flex-col gap-6">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
@@ -60,13 +59,13 @@ export default function Home() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="rounded-2xl border border-border/60 bg-white/80 px-4 py-3 text-sm text-foreground"
+                    className="rounded-lg border border-gray-100 bg-white px-4 py-3 text-sm text-foreground"
                   >
                     {item}
                   </div>
                 ))}
               </div>
-              <div className="rounded-2xl bg-muted/60 p-4 text-xs text-muted-foreground">
+              <div className="rounded-lg bg-slate-50 p-4 text-xs text-muted-foreground">
                 El agente de QuoteAI monitorea tu bandeja y prepara respuestas
                 para aprobacion.
               </div>
@@ -92,7 +91,7 @@ export default function Home() {
                 "Envia, recibe y redacta respuestas con analitica integrada.",
             },
           ].map((card) => (
-            <Card key={card.title} className="border-border/60 bg-white/70 p-6">
+            <Card key={card.title} className="border-gray-100 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-semibold">{card.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 {card.description}

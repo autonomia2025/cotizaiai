@@ -74,14 +74,14 @@ export default async function QuoteDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      <Card className="border-border/60 bg-white/70 p-6">
+      <Card className="border-gray-100 bg-white p-6 shadow-sm">
         <p className="text-sm text-muted-foreground">Descripcion</p>
         <p className="mt-2 text-base">{quote.description}</p>
         <div className="mt-6 space-y-3">
           {items?.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between rounded-2xl border border-border/60 bg-white/80 px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
             >
               <div>
                 <p className="text-sm font-medium">{item.name}</p>
@@ -95,7 +95,7 @@ export default async function QuoteDetailPage({ params }: PageProps) {
             </div>
           ))}
         </div>
-        <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-4">
+        <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-4">
           <p className="text-sm font-semibold">Total</p>
           <p className="text-lg font-semibold">
             ${Number(quote.total_price).toFixed(2)}

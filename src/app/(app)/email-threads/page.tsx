@@ -29,7 +29,7 @@ export default async function EmailThreadsPage() {
 
       <div className="grid gap-4">
         {threads?.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 px-6 py-12 text-center">
+          <div className="rounded-lg border border-dashed border-gray-100 bg-white px-6 py-12 text-center">
             <p className="text-sm font-medium text-muted-foreground">
               Aun no hay conversaciones
             </p>
@@ -40,7 +40,7 @@ export default async function EmailThreadsPage() {
         ) : (
           threads?.map((thread) => (
             <Link key={thread.id} href={`/email-threads/${thread.id}`}>
-              <Card className="flex items-center justify-between border-border/60 bg-white/70 px-6 py-4 transition hover:shadow-lg cursor-pointer">
+              <Card className="flex items-center justify-between border-gray-100 bg-white px-6 py-4 transition hover:shadow-sm cursor-pointer">
                 <div>
                   <p className="text-sm font-semibold">
                     {thread.subject ?? "Conversacion de cotizacion"}

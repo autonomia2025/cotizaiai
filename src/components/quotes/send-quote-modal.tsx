@@ -72,7 +72,7 @@ export const SendQuoteModal = ({
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border/60 bg-white/70 p-4">
+        <div className="rounded-lg border border-gray-100 bg-white p-4">
           <div
             className="prose prose-sm max-w-none text-foreground"
             dangerouslySetInnerHTML={{ __html: html }}
