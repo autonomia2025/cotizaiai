@@ -1,3 +1,4 @@
+import { createSupabaseAdminClient } from "./admin";
 import { createSupabaseServerClient } from "./server";
 
 export const getUserContext = async () => {
@@ -18,6 +19,22 @@ export const getUserContext = async () => {
     .maybeSingle();
 
   if (!profile) {
+    const admin = createSupabaseAdminClient();
+    const { data: adminProfile } = await admin
+      .from("users")
+      .select("id, organization_id, name, role, email")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (adminProfile) {
+      return {
+        user,
+        profile: adminProfile,
+        organizationId: adminProfile.organization_id ?? null,
+        missingProfile: false,
+      };
+    }
+
     return {
       user: null,
       profile: null,
