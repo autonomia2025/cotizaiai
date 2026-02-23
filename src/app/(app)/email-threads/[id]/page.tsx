@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/components/ui/submit-button";
@@ -13,19 +15,22 @@ type PageProps = {
 export default async function EmailThreadDetailPage({ params }: PageProps) {
   const supabase = await createSupabaseServerClient();
   const organizationId = await getCurrentOrganizationId();
-  const { data: thread } = await supabase
-    .from("email_threads")
-    .select("id, subject")
-    .eq("id", params.id)
-    .eq("organization_id", organizationId ?? "")
-    .single();
-
-  const { data: messages } = await supabase
-    .from("email_messages")
-    .select("id, direction, content, created_at, is_suggested, email_threads!inner(organization_id)")
-    .eq("thread_id", params.id)
-    .eq("email_threads.organization_id", organizationId ?? "")
-    .order("created_at", { ascending: true });
+  const [{ data: thread }, { data: messages }] = await Promise.all([
+    supabase
+      .from("email_threads")
+      .select("id, subject")
+      .eq("id", params.id)
+      .eq("organization_id", organizationId ?? "")
+      .single(),
+    supabase
+      .from("email_messages")
+      .select(
+        "id, direction, content, created_at, is_suggested, email_threads!inner(organization_id)"
+      )
+      .eq("thread_id", params.id)
+      .eq("email_threads.organization_id", organizationId ?? "")
+      .order("created_at", { ascending: true }),
+  ]);
 
   if (!thread) {
     return <div>Conversacion no encontrada.</div>;
@@ -37,6 +42,13 @@ export default async function EmailThreadDetailPage({ params }: PageProps) {
 
   return (
     <div className="space-y-8">
+      <Link
+        href="/email-threads"
+        className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        Volver a correos
+      </Link>
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           Correo

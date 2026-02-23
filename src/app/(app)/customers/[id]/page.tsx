@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/ui/submit-button";
@@ -17,20 +18,21 @@ type PageProps = {
 export default async function CustomerDetailPage({ params }: PageProps) {
   const supabase = await createSupabaseServerClient();
   const organizationId = await getCurrentOrganizationId();
-  const { data: customer } = await supabase
-    .from("customers")
-    .select("id, name, email, company, created_at")
-    .eq("id", params.id)
-    .eq("organization_id", organizationId ?? "")
-    .single();
-
-  const { data: quotes } = await supabase
-    .from("quotes")
-    .select("id, title, status, total_price, created_at")
-    .eq("customer_id", params.id)
-    .eq("organization_id", organizationId ?? "")
-    .order("created_at", { ascending: false })
-    .limit(6);
+  const [{ data: customer }, { data: quotes }] = await Promise.all([
+    supabase
+      .from("customers")
+      .select("id, name, email, company, created_at")
+      .eq("id", params.id)
+      .eq("organization_id", organizationId ?? "")
+      .single(),
+    supabase
+      .from("quotes")
+      .select("id, title, status, total_price, created_at")
+      .eq("customer_id", params.id)
+      .eq("organization_id", organizationId ?? "")
+      .order("created_at", { ascending: false })
+      .limit(6),
+  ]);
 
   const statusLabels: Record<string, string> = {
     draft: "Borrador",
@@ -45,6 +47,13 @@ export default async function CustomerDetailPage({ params }: PageProps) {
 
   return (
     <div className="space-y-8">
+      <Link
+        href="/customers"
+        className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        Volver a clientes
+      </Link>
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           Cliente

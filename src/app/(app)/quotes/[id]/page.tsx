@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubmitButton } from "@/components/ui/submit-button";
@@ -19,31 +21,35 @@ type PageProps = {
 export default async function QuoteDetailPage({ params }: PageProps) {
   const supabase = await createSupabaseServerClient();
   const organizationId = await getCurrentOrganizationId();
-  const { data: quote } = await supabase
-    .from("quotes")
-    .select(
-      "id, title, description, total_price, status, created_at, customer_id, pdf_url"
-    )
-    .eq("id", params.id)
-    .eq("organization_id", organizationId ?? "")
-    .single();
-
-  const { data: items } = await supabase
-    .from("quote_items")
-    .select("id, name, description, price")
-    .eq("quote_id", params.id);
-
-  const { data: organization } = await supabase
-    .from("organizations")
-    .select("name")
-    .eq("id", organizationId ?? "")
-    .single();
-
-  const { data: emailSettings } = await supabase
-    .from("email_settings")
-    .select("from_name, from_email, signature")
-    .eq("organization_id", organizationId ?? "")
-    .maybeSingle();
+  const [
+    { data: quote },
+    { data: items },
+    { data: organization },
+    { data: emailSettings },
+  ] = await Promise.all([
+    supabase
+      .from("quotes")
+      .select(
+        "id, title, description, total_price, status, created_at, customer_id, pdf_url"
+      )
+      .eq("id", params.id)
+      .eq("organization_id", organizationId ?? "")
+      .single(),
+    supabase
+      .from("quote_items")
+      .select("id, name, description, price")
+      .eq("quote_id", params.id),
+    supabase
+      .from("organizations")
+      .select("name")
+      .eq("id", organizationId ?? "")
+      .single(),
+    supabase
+      .from("email_settings")
+      .select("from_name, from_email, signature")
+      .eq("organization_id", organizationId ?? "")
+      .maybeSingle(),
+  ]);
 
   if (!quote) {
     return <div>Cotizacion no encontrada.</div>;
@@ -58,6 +64,13 @@ export default async function QuoteDetailPage({ params }: PageProps) {
 
   return (
     <div className="space-y-8">
+      <Link
+        href="/quotes"
+        className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        Volver a cotizaciones
+      </Link>
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           Cotizacion

@@ -20,3 +20,5 @@ export default async function AppLayout({
 
   return <AppShell>{children}</AppShell>;
 }
+
+export const revalidate = 0;

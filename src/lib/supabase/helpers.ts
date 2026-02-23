@@ -1,7 +1,8 @@
+import { cache } from "react";
 import { createSupabaseAdminClient } from "./admin";
 import { createSupabaseServerClient } from "./server";
 
-export const getUserContext = async () => {
+export const getUserContext = cache(async () => {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -49,7 +50,7 @@ export const getUserContext = async () => {
     organizationId: profile?.organization_id ?? null,
     missingProfile: false,
   };
-};
+});
 
 export const getCurrentOrganizationId = async () => {
   const { organizationId } = await getUserContext();
